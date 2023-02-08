@@ -1,18 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_gravity="top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/button_text_size" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/button_find"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/ys_display_bold"
+            android:letterSpacing="0"
+            android:text="@string/find_name"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_text_color"
+            android:textSize="@dimen/button_text_size"
+            app:icon="@drawable/_26690_magnify_search_zoom_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/btn_text_color"
+            android:foreground="?attr/selectableItemBackground"
+            app:cornerRadius="@dimen/corner_radius"/>
+        <Button
+            android:id="@+id/button_media"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/ys_display_bold"
+            android:letterSpacing="0"
+            android:text="@string/media_name"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_text_color"
+            android:textSize="@dimen/button_text_size"
+            app:cornerRadius="@dimen/corner_radius"
+            app:icon="@drawable/_669472_music_library_ic_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/btn_text_color"
+            android:foreground="?attr/selectableItemBackground"/>
+        <Button
+            android:id="@+id/button_tuning"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/ys_display_bold"
+            android:foreground="?attr/selectableItemBackground"
+            android:letterSpacing="0"
+            android:text="@string/settings"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_text_color"
+            android:textSize="@dimen/button_text_size"
+            app:cornerRadius="@dimen/corner_radius"
+            app:icon="@drawable/_26699_settings_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="10.66dp"
+            app:iconTint="@color/btn_text_color" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</LinearLayout>
