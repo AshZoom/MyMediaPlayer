@@ -15,49 +15,26 @@ class MainActivity : AppCompatActivity() {
         //
         val findButton = findViewById<Button>(R.id.button_find)
         findButton.setOnClickListener {
-            val findIntent=Intent( this, Settingfind::class.java)
-            startActivity(findIntent)
+            navigateTo(SearchActivity::class.java)
         }
 
         //Activity для перехода на экран "Медиатека"
         val mediaButton = findViewById<Button>(R.id.button_media)
         mediaButton.setOnClickListener {
-            val mediaIntent=Intent(this,Media::class.java)
-            startActivity(mediaIntent)
+            navigateTo(MediaActivity::class.java)
         }
 
         //Activity для перехода на экран "Настройки"
         val settingButton = findViewById<Button>(R.id.button_tuning)
         settingButton.setOnClickListener {
-            val settingIntent= Intent (this, Settingactivity::class.java)
-            startActivity(settingIntent)
+            navigateTo(SettingActivity::class.java)
         }
 
-        /*
-        find.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity, "Нажали на кнопку 'Поиск'",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    val buttonClickListener: View.OnClickListener= object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(
-                    this@MainActivity, "Нажали на кнопку 'Медиатека'",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-        media.setOnClickListener(buttonClickListener)
-        val setting = findViewById<Button>(R.id.button_tuning)
-        setting.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity, "Нажали на кнопку 'Настройки'",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        */
 
+    }
 
+    private fun navigateTo(clazz: Class<out AppCompatActivity>) {
+        val intent = Intent(this, clazz)
+        startActivity(intent)
     }
 }

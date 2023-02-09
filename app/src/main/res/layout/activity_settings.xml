@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="ExtraText">
 
         <Button
             android:id="@+id/button_arrow_back"
@@ -33,16 +33,16 @@
             android:layout_width="208dp"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
-            android:paddingStart="12dp"
-            android:paddingTop="14dp"
             android:fontFamily="@font/ys_display_bold"
             android:letterSpacing="0"
+            android:paddingStart="12dp"
+            android:paddingTop="14dp"
             android:text="@string/settings"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/button_text_size" />
 
-    </LinearLayout>
 
+    </LinearLayout>
 
 
     <LinearLayout
@@ -53,25 +53,29 @@
 
         <TextView
             android:id="@+id/dark_mode_switch"
-            android:layout_width="300dp"
-            android:layout_height="61dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
             android:letterSpacing="0"
+            android:maxWidth="300dp"
             android:paddingStart="@dimen/setting_txt_start"
+            android:paddingLeft="@dimen/setting_txt_start"
             android:paddingTop="@dimen/setting_txt_top"
+            android:paddingRight="@dimen/setting_txt_end"
+            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/dark_mode"
             android:textColor="@color/text_settings_color"
-            android:textSize="@dimen/setting_text_size"/>
+            android:textSize="@dimen/setting_text_size" />
 
-        <ImageView
-            android:id="@+id/button_dark_mode"
-            android:layout_width="56dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:paddingEnd="7dp"
 
-            android:scaleType="centerCrop"
-            android:src="@drawable/switch_off" />
+        <androidx.appcompat.widget.SwitchCompat
+
+            android:id="@+id/mySwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:scaleType="centerCrop" />
+
 
     </LinearLayout>
 
@@ -83,25 +87,35 @@
 
         <TextView
             android:id="@+id/app_share"
-            android:layout_width="300dp"
-            android:layout_height="61dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
             android:letterSpacing="0"
+            android:maxWidth="300dp"
             android:paddingStart="@dimen/setting_txt_start"
+            android:paddingLeft="@dimen/setting_txt_start"
             android:paddingTop="@dimen/setting_txt_top"
+            android:paddingRight="@dimen/setting_txt_end"
+            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/app_share"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
-        <ImageView
-            android:id="@+id/button_share_app"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginStart="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sharelight_mode" />
 
+        <Button
+            android:id="@+id/button_share_app"
+            style="?android:attr/buttonBarButtonStyle"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:gravity="end"
+            android:scaleType="center"
+            app:icon="@drawable/icon_share_app"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/icon_color"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
@@ -112,24 +126,34 @@
 
         <TextView
             android:id="@+id/support_apply"
-            android:layout_width="300dp"
-            android:layout_height="61dp"
-            android:paddingStart="@dimen/setting_txt_start"
-            android:paddingTop="@dimen/setting_txt_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
             android:letterSpacing="0"
+            android:maxWidth="300dp"
+            android:paddingStart="@dimen/setting_txt_start"
+            android:paddingLeft="@dimen/setting_txt_start"
+            android:paddingTop="@dimen/setting_txt_top"
+            android:paddingRight="@dimen/setting_txt_end"
+            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/support_apply"
             android:textColor="@color/text_settings_color"
-            android:textSize="@dimen/setting_text_size"/>
+            android:textSize="@dimen/setting_text_size" />
 
-        <ImageView
+
+        <Button
             android:id="@+id/button_support"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginStart="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/support_group" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:gravity="end"
+            android:scaleType="center"
+            app:icon="@drawable/icon_support"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/icon_color"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
@@ -140,24 +164,34 @@
 
         <TextView
             android:id="@+id/user_agreement"
-            android:layout_width="300dp"
-            android:layout_height="61dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
             android:letterSpacing="0"
+            android:maxWidth="300dp"
             android:paddingStart="@dimen/setting_txt_start"
+            android:paddingLeft="@dimen/setting_txt_start"
             android:paddingTop="@dimen/setting_txt_top"
+            android:paddingRight="@dimen/setting_txt_end"
+            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/user_agreement"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
-        <ImageView
+
+        <Button
             android:id="@+id/button_arrow_forward"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginStart="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward_light_mode" />
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:gravity="end"
+            android:scaleType="center"
+            app:icon="@drawable/icon_arrow_forward"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/icon_color"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
