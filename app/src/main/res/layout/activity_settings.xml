@@ -48,34 +48,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/setting_txt_start"
+        android:paddingVertical="@dimen/setting_txt_top">
+
 
         <TextView
             android:id="@+id/dark_mode_switch"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
-            android:letterSpacing="0"
-            android:maxWidth="300dp"
-            android:paddingStart="@dimen/setting_txt_start"
-            android:paddingLeft="@dimen/setting_txt_start"
-            android:paddingTop="@dimen/setting_txt_top"
-            android:paddingRight="@dimen/setting_txt_end"
-            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/dark_mode"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
 
-        <androidx.appcompat.widget.SwitchCompat
-
-            android:id="@+id/mySwitch"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/button_dark_mode_switch"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:scaleType="centerCrop" />
-
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/setting_icon_text"
+            android:src="@drawable/icon_switch_off" />
 
     </LinearLayout>
 
@@ -83,117 +79,87 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/setting_txt_start"
+        android:paddingVertical="@dimen/setting_txt_top">
 
         <TextView
             android:id="@+id/app_share"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
-            android:letterSpacing="0"
-            android:maxWidth="300dp"
-            android:paddingStart="@dimen/setting_txt_start"
-            android:paddingLeft="@dimen/setting_txt_start"
-            android:paddingTop="@dimen/setting_txt_top"
-            android:paddingRight="@dimen/setting_txt_end"
-            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/app_share"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
-
-        <Button
+        <ImageView
             android:id="@+id/button_share_app"
-            style="?android:attr/buttonBarButtonStyle"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="end"
-            android:scaleType="center"
-            app:icon="@drawable/icon_share_app"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/icon_color"
-            tools:ignore="SpeakableTextPresentCheck" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/setting_icon_text"
+            android:src="@drawable/icon_share_app" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/setting_txt_start"
+        android:paddingVertical="@dimen/setting_txt_top">
 
         <TextView
             android:id="@+id/support_apply"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
-            android:letterSpacing="0"
-            android:maxWidth="300dp"
-            android:paddingStart="@dimen/setting_txt_start"
-            android:paddingLeft="@dimen/setting_txt_start"
-            android:paddingTop="@dimen/setting_txt_top"
-            android:paddingRight="@dimen/setting_txt_end"
-            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/support_apply"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
-
-        <Button
+        <ImageView
             android:id="@+id/button_support"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="end"
-            android:scaleType="center"
-            app:icon="@drawable/icon_support"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/icon_color"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/setting_icon_text"
+            android:src="@drawable/icon_support" />
+
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/setting_txt_start"
+        android:paddingVertical="@dimen/setting_txt_top">
 
         <TextView
             android:id="@+id/user_agreement"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
-            android:letterSpacing="0"
-            android:maxWidth="300dp"
-            android:paddingStart="@dimen/setting_txt_start"
-            android:paddingLeft="@dimen/setting_txt_start"
-            android:paddingTop="@dimen/setting_txt_top"
-            android:paddingRight="@dimen/setting_txt_end"
-            android:paddingBottom="@dimen/setting_txt_bottom"
             android:text="@string/user_agreement"
             android:textColor="@color/text_settings_color"
             android:textSize="@dimen/setting_text_size" />
 
+        <ImageView
+            android:id="@+id/button_user_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/setting_icon_text"
+            android:src="@drawable/icon_arrow_forward" />
 
-        <Button
-            android:id="@+id/button_arrow_forward"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:gravity="end"
-            android:scaleType="center"
-            app:icon="@drawable/icon_arrow_forward"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconTint="@color/icon_color"
-            tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
-
 
 </LinearLayout>

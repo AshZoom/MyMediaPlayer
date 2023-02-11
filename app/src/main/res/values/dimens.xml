@@ -3,12 +3,13 @@
     <dimen name="button_text_size">22sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="button_height">220dp</dimen>
+    <dimen name="icon_margin_top">19dp</dimen>
+    <dimen name="icon_margin_bottom">18dp</dimen>
     <dimen name="setting_text_size">16sp</dimen>
     <dimen name="setting_txt_top">21dp</dimen>
     <dimen name="setting_txt_bottom">21dp</dimen>
     <dimen name="setting_txt_start">16dp</dimen>
     <dimen name="setting_txt_end">44dp</dimen>
     <dimen name="setting_icon_text">8dp</dimen>
-    <dimen name="icon_margin_top">19dp</dimen>
-    <dimen name="icon_margin_bottom">18dp</dimen>
+    <dimen name="setting_icon_right">12dp</dimen>
 </resources>
