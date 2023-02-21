@@ -74,10 +74,7 @@
 
         <ImageView
             android:id="@+id/button_share_app"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/setting_icon_text"
+            style="@style/ImageViewStyleSetting"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_share_app" />
     </LinearLayout>
@@ -95,10 +92,7 @@
 
         <ImageView
             android:id="@+id/button_support"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/setting_icon_text"
+            style="@style/ImageViewStyleSetting"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_support" />
 
@@ -119,10 +113,7 @@
 
         <ImageView
             android:id="@+id/button_user_agreement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/setting_icon_text"
+            style="@style/ImageViewStyleSetting"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_arrow_forward" />
 
