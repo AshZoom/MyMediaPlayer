@@ -26,7 +26,7 @@
         <item name="colorControlActivated">@color/color_switch_night</item>
         <item name="trackTint">@color/color_switch_night</item>
         <item name="thumbTint">@color/color_switch_night</item>
-        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="android:tint">?attr/colorOnPrimary</item>
 
 
     </style>

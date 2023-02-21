@@ -32,7 +32,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginStart">@dimen/setting_icon_text</item>
-
+        <item name="iconTint">?attr/colorOnPrimary</item>
 
     </style>
 
@@ -51,9 +51,7 @@
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/setting_icon_text</item>
-        <!--
-        <item name="iconTint">@color/btn_text_color</item>
-        -->
+
     </style>
 
 
