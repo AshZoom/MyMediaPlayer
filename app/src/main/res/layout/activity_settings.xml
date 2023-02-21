@@ -45,7 +45,6 @@
 
     <LinearLayout
         style="@style/LinearLayoutStyleSetting"
-
         android:paddingHorizontal="@dimen/setting_txt_start"
         android:paddingVertical="@dimen/setting_txt_top">
 
@@ -79,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/setting_icon_text"
+            android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_share_app" />
     </LinearLayout>
 
@@ -99,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/setting_icon_text"
+            android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_support" />
 
 
@@ -122,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/setting_icon_text"
+            android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/icon_arrow_forward" />
 
 
