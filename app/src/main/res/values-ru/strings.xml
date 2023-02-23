@@ -4,8 +4,10 @@
     <string name="media_name">Медиатека</string>
     <string name="find_name">Поиск</string>
     <string name="settings">Настройки</string>
+    <string name="searching">Поиск</string>
     <string name="dark_mode">Тёмная тема</string>
     <string name="app_share">Поделиться приложением</string>
     <string name="support_apply">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="input_hint">Поиск</string>
 </resources>

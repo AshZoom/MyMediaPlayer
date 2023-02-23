@@ -1,9 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:orientation="vertical"
+    android:theme="@style/SettingScreen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:theme="@style/SettingScreen"
+        tools:ignore="ExtraText">
+
+        <Button
+            android:id="@+id/button_arrow_back_searching"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="center"
+            app:icon="@drawable/arrow_back"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="208dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/ys_display_bold"
+            android:letterSpacing="0"
+            android:paddingStart="12dp"
+            android:paddingTop="14dp"
+            android:shape="rectangle"
+            android:text="@string/searching"
+            android:textSize="@dimen/button_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LinearLayoutStyleSetting"
+        android:paddingHorizontal="@dimen/setting_txt_start"
+        android:paddingVertical="@dimen/setting_txt_top"
+        android:theme="@style/SettingScreen"
+        tools:ignore="ExtraText">
+
+        <EditText
+            android:id="@+id/inputTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@color/color_switch_track_light"
+            android:clickable="true"
+            android:drawableLeft="@drawable/icon_search_gray"
+            android:drawablePadding="9dp"
+            android:hint="@string/input_hint"
+            android:inputType="text"
+            android:paddingLeft="13dp"
+            android:paddingRight="12dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/clearTextSearch"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_switch_track_light"
+            android:drawableStart="@drawable/icon_clear"
+            android:paddingStart="14dp"
+            android:visibility="gone" />
+        <!---
+        android:visibility="gone"
+        -->
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
