@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import android.R
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -15,6 +16,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 
 class SearchActivity : AppCompatActivity() {
+    lateinit var inputTextSearch: EditText
+    companion object{
+        const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+    }
+
+    //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
+    //inputTextSearch.text.toString() - текст который нужно сохранить
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(TEXT_EDITTEXT, inputTextSearch.text.toString())
+    }
+
+    //получаем сохранённый текст
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        inputTextSearch.setText(savedInstanceState.getString(TEXT_EDITTEXT))
+    }
+
+    @SuppressLint("MissingInflatedId")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.practicum.mymediaplayer.R.layout.activity_search)

@@ -51,6 +51,7 @@
 
         <EditText
             android:id="@+id/inputTextSearch"
+            style= "@style/MyEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -73,9 +74,7 @@
             android:drawableStart="@drawable/icon_clear"
             android:paddingStart="14dp"
             android:visibility="gone" />
-        <!---
-        android:visibility="gone"
-        -->
+
 
 
     </LinearLayout>

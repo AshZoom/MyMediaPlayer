@@ -55,7 +55,7 @@
     </style>
 
     <style name="MyEditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
 
