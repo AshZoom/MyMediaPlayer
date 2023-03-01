@@ -10,4 +10,8 @@
     <string name="support_apply">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="input_hint">Поиск</string>
+    <string name="message_share_app">"https://practicum.yandex.ru/profile/android-developer/"</string>
+    <string name="messageSupport">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="messageSupportTheme">Сообщение разработчикам и разработчикам приложения PlaylistMaker</string>
+    <string name="user_agreement_address">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

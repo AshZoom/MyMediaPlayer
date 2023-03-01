@@ -10,4 +10,8 @@
     <string name="support_apply">Write to support</string>
     <string name="user_agreement">User agreement</string>
     <string name="input_hint">Search</string>
+    <string name="message_share_app">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="messageSupport">Thanks to the developers and developers for the cool app!</string>
+    <string name="messageSupportTheme">Message to the developers and developers of the PlaylistMaker app</string>
+    <string name="user_agreement_address">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

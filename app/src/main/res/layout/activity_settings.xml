@@ -5,23 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/SettingScreen">
+    android:theme="@style/SecondaryScreen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:theme="@style/SettingScreen"
+        android:theme="@style/SecondaryScreen"
         tools:ignore="ExtraText">
 
         <Button
             android:id="@+id/button_arrow_back"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:scaleType="center"
+            style="@style/BackButtonStyle"
             app:icon="@drawable/arrow_back"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
@@ -29,15 +24,8 @@
 
 
         <TextView
-            android:layout_width="208dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/ys_display_bold"
-            android:letterSpacing="0"
-            android:paddingStart="12dp"
-            android:paddingTop="14dp"
-            android:text="@string/settings"
-            android:textSize="@dimen/button_text_size" />
+            style="@style/HeadingTextStyle"
+            android:text="@string/settings" />
 
 
     </LinearLayout>

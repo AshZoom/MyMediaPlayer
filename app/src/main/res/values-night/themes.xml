@@ -19,7 +19,8 @@
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 
-    <style name="SettingScreen" parent="Theme.MyMediaPlayer">
+
+    <style name="SecondaryScreen" parent="Theme.MyMediaPlayer">
         <item name="drawableTint">@color/text_settings_color</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:background">@color/black</item>
@@ -27,7 +28,6 @@
         <item name="trackTint">@color/color_switch_night</item>
         <item name="thumbTint">@color/color_switch_night</item>
         <item name="android:tint">?attr/colorOnPrimary</item>
-
 
     </style>
 

@@ -1,24 +1,21 @@
 package com.practicum.mymediaplayer
 
-import android.R
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 
 class SearchActivity : AppCompatActivity() {
-    lateinit var inputTextSearch: EditText
-    companion object{
-        const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+    private lateinit var inputTextSearch: EditText
+
+    companion object {
+        private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
     }
 
     //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
@@ -34,19 +31,15 @@ class SearchActivity : AppCompatActivity() {
         inputTextSearch.setText(savedInstanceState.getString(TEXT_EDITTEXT))
     }
 
-    @SuppressLint("MissingInflatedId")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.practicum.mymediaplayer.R.layout.activity_search)
+        setContentView(R.layout.activity_search)
 
-        //findViewById<Button>(R.id.button_arrow_back_searching).setOnClickListener { finish() }
-        val backButton =
-            findViewById<Button>(com.practicum.mymediaplayer.R.id.button_arrow_back_searching)
-        val inputTextSearch =
-            findViewById<EditText>(com.practicum.mymediaplayer.R.id.inputTextSearch)
-        val clearButton =
-            findViewById<AppCompatButton>(com.practicum.mymediaplayer.R.id.clearTextSearch)
+
+        val backButton = findViewById<Button>(R.id.button_arrow_back_searching)
+        inputTextSearch = findViewById(R.id.inputTextSearch)
+        val clearButton = findViewById<AppCompatButton>(R.id.clearTextSearch)
 
         backButton.setOnClickListener {
             finish()
@@ -56,12 +49,12 @@ class SearchActivity : AppCompatActivity() {
             inputTextSearch.setText("")
             it.hideKeyboard()
         }
-        var searchTextWatcher = object : TextWatcher {
+        val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                clearButton.visibility = changeButtonVisibility(s)
 
             }
 
@@ -75,8 +68,8 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
-    fun clearButtonVisibility(s: CharSequence?): Int {
+    // Метод clearButtonVisibility устанавливает видимость кнопки сброса текста.
+    private fun changeButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
         } else {
@@ -84,7 +77,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun View.hideKeyboard() {
+    private fun View.hideKeyboard() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)

@@ -5,79 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/SettingScreen">
+    android:theme="@style/SecondaryScreen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:theme="@style/SettingScreen"
         tools:ignore="ExtraText">
 
         <Button
             android:id="@+id/button_arrow_back_searching"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="4dp"
-            android:scaleType="center"
+            style="@style/BackButtonStyle"
             app:icon="@drawable/arrow_back"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
-            android:layout_width="208dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/ys_display_bold"
-            android:letterSpacing="0"
-            android:paddingStart="12dp"
-            android:paddingTop="14dp"
-            android:shape="rectangle"
-            android:text="@string/searching"
-            android:textSize="@dimen/button_text_size" />
+            style="@style/HeadingTextStyle"
+            android:text="@string/searching" />
+
 
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/LinearLayoutStyleSetting"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/setting_txt_start"
         android:paddingVertical="@dimen/setting_txt_top"
-        android:theme="@style/SettingScreen"
-        tools:ignore="ExtraText">
+        android:theme="@style/SecondaryScreen">
 
         <EditText
             android:id="@+id/inputTextSearch"
-            style= "@style/MyEditTextStyle"
+            style="@style/MyEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@color/color_switch_track_light"
+            android:background="@drawable/round_edittext_background"
             android:clickable="true"
-            android:drawableLeft="@drawable/icon_search_gray"
+            android:drawableStart="@drawable/icon_search_gray"
             android:drawablePadding="9dp"
+            android:focusable="true"
             android:hint="@string/input_hint"
             android:inputType="text"
-            android:paddingLeft="13dp"
-            android:paddingRight="12dp" />
+            android:textSize="@dimen/setting_text_size"
+            android:fontFamily="@font/ys_text_regular"
+            android:maxLength="20"
+            android:paddingStart="13dp"
+            android:paddingEnd="12dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clearTextSearch"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/color_switch_track_light"
-            android:drawableStart="@drawable/icon_clear"
-            android:paddingStart="14dp"
+            style="@style/ClearButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:drawableRight="@drawable/icon_clear"
+            android:paddingEnd="12dp"
             android:visibility="gone" />
 
-
-
-    </LinearLayout>
-
+    </FrameLayout>
 
 </LinearLayout>
