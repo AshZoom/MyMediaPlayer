@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputTextSearch: EditText
@@ -36,6 +38,48 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val track1 = Track(
+            resources.getString(R.string.nameTrack1),
+            resources.getString(R.string.artistTrack1),
+            resources.getString(R.string.timeTrack1),
+            resources.getString(R.string.imageUrlTrack1)
+        )
+
+        val track2 = Track(
+            resources.getString(R.string.nameTrack2),
+            resources.getString(R.string.artistTrack2),
+            resources.getString(R.string.timeTrack2),
+            resources.getString(R.string.imageUrlTrack2)
+        )
+
+        val track3 = Track(
+            resources.getString(R.string.nameTrack3),
+            resources.getString(R.string.artistTrack3),
+            resources.getString(R.string.timeTrack3),
+            resources.getString(R.string.imageUrlTrack3)
+        )
+
+        val track4 = Track(
+            resources.getString(R.string.nameTrack4),
+            resources.getString(R.string.artistTrack4),
+            resources.getString(R.string.timeTrack4),
+            resources.getString(R.string.imageUrlTrack4)
+        )
+
+        val track5 = Track(
+            resources.getString(R.string.nameTrack5),
+            resources.getString(R.string.artistTrack5),
+            resources.getString(R.string.timeTrack5),
+            resources.getString(R.string.imageUrlTrack5)
+        )
+
+        val trackRecycleView = findViewById<RecyclerView>(R.id.track_recyclerView)
+        val trackList: MutableList<Track> = mutableListOf(track1, track2, track3, track4, track5)
+        val trackAdapter = TrackAdapter(trackList)
+        trackRecycleView.adapter = trackAdapter
+
+
+        // код для  EditText
 
         val backButton = findViewById<Button>(R.id.button_arrow_back_searching)
         inputTextSearch = findViewById(R.id.inputTextSearch)
