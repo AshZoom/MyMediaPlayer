@@ -32,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/setting_txt_start"
-        android:paddingVertical="@dimen/setting_txt_top"
-        android:theme="@style/SecondaryScreen">
+        android:paddingVertical="@dimen/setting_txt_top">
 
         <EditText
             android:id="@+id/inputTextSearch"
@@ -45,13 +44,13 @@
             android:drawableStart="@drawable/icon_search_gray"
             android:drawablePadding="9dp"
             android:focusable="true"
+            android:fontFamily="@font/ys_text_regular"
             android:hint="@string/input_hint"
             android:inputType="text"
-            android:textSize="@dimen/setting_text_size"
-            android:fontFamily="@font/ys_text_regular"
             android:maxLength="20"
             android:paddingStart="13dp"
-            android:paddingEnd="12dp" />
+            android:paddingEnd="12dp"
+            android:textSize="@dimen/setting_text_size" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clearTextSearch"
@@ -62,6 +61,16 @@
             android:drawableRight="@drawable/icon_clear"
             android:paddingEnd="12dp"
             android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/track_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="72dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/song_list_layout" />
+
 
     </FrameLayout>
 

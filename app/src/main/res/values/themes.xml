@@ -17,6 +17,7 @@
 
     <style name="MainScreen" parent="Theme.MyMediaPlayer">
         <item name="android:background">@color/background</item>
+
     </style>
 
     <style name="SecondaryScreen" parent="Theme.MyMediaPlayer">
