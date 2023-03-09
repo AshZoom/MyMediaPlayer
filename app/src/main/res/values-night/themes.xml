@@ -19,8 +19,10 @@
     </style>
 
     <style name="MainScreen" parent="Theme.MyMediaPlayer">
+
         <item name="android:background">?attr/colorPrimary</item>
         <item name="iconTint">@color/black</item>
+
     </style>
 
 

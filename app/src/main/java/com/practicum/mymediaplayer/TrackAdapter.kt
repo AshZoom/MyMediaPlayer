@@ -45,7 +45,6 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackTimeView = itemView.findViewById(R.id.track_time)
     }
 
-
     fun bind(model: Track) {
         trackNameView.text = model.trackName
         artistNameView.text = model.artistName

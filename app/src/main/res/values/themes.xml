@@ -22,11 +22,13 @@
     </style>
 
     <style name="SecondaryScreen" parent="Theme.MyMediaPlayer">
+
         <item name="drawableTint">@color/text_settings_color</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="trackTint">@color/color_switch_track_light</item>
         <item name="thumbTint">@color/color_switch_knob_light</item>
         <item name="iconTint">@color/color_switch_knob_light</item>
+
     </style>
 
 </resources>
