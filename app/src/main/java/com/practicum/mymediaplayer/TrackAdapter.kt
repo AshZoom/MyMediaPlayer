@@ -45,15 +45,17 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackTimeView = itemView.findViewById(R.id.track_time)
     }
 
-
     fun bind(model: Track) {
         trackNameView.text = model.trackName
         artistNameView.text = model.artistName
         trackTimeView.text = model.trackTime
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .transform(RoundedCorners(10))
-            .placeholder(com.google.android.material.R.drawable.mtrl_ic_error)
+            .transform(
+                RoundedCorners(itemView.resources
+                .getDimensionPixelSize(R.dimen.setting_rounded_Corners)))
+            .placeholder(R.mipmap.ic_vector)
             .into(imageViewHolder)
+
     }
 }
