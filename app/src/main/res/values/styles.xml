@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MessageTextStyle">
+
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="TextViewStyle">
+
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/setting_text_size</item>
+    </style>
+
+    <style name="LinearLayoutStyleSetting">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
+    <style name="ImageViewStyleSetting">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginStart">@dimen/setting_icon_text</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+
+    </style>
+
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">220dp</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/btn_text_color</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/setting_icon_text</item>
+
+    </style>
+
+    <style name="BackButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_marginLeft">16dp</item>
+
+    </style>
+
+    <style name="HeadingTextStyle">
+
+        <item name="android:layout_width">208dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+
+    </style>
+
+    <style name="MyEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="ClearButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>
