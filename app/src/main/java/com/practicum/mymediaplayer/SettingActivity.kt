@@ -21,7 +21,6 @@ class SettingActivity : AppCompatActivity() {
         writeToSupport()
         userAgreement()
 
-
     }
 
     private fun shareApp() {

@@ -6,7 +6,18 @@
     </style>
 
     <style name="ClearButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+
         <item name="android:background">@android:color/transparent</item>
+
+    </style>
+
+    <style name="ImageViewStyleSetting">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginStart">@dimen/setting_icon_text</item>
+        <item name="tint">@color/white</item>
 
     </style>
 
@@ -27,5 +38,6 @@
         <item name="iconTint">@color/black</item>
 
     </style>
+
 
 </resources>

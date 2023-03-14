@@ -12,4 +12,10 @@
     <dimen name="setting_txt_end">44dp</dimen>
     <dimen name="setting_icon_text">8dp</dimen>
     <dimen name="setting_icon_right">12dp</dimen>
+    <dimen name="setting_rounded_Corners">2dp</dimen>
+    <dimen name="track_image_height">45dp</dimen>
+    <dimen name="track_image_width">45dp</dimen>
+    <dimen name="artist_time_text_size">11sp</dimen>
+    <dimen name="song_padding_start">8dp</dimen>
+
 </resources>

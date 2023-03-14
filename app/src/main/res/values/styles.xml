@@ -37,6 +37,7 @@
     </style>
 
 
+
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
 
         <item name="android:layout_width">match_parent</item>
@@ -83,7 +84,9 @@
     </style>
 
     <style name="ClearButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+
         <item name="android:background">@android:color/transparent</item>
+
     </style>
 
 </resources>

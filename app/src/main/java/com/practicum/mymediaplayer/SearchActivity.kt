@@ -33,7 +33,6 @@ class SearchActivity : AppCompatActivity() {
         inputTextSearch.setText(savedInstanceState.getString(TEXT_EDITTEXT))
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
