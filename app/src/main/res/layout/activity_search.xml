@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:theme="@style/SecondaryScreen">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,6 +40,8 @@
             style="@style/MyEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:background="@drawable/round_edittext_background"
             android:clickable="true"
             android:drawableStart="@drawable/icon_search_gray"
@@ -68,9 +71,16 @@
             android:layout_height="match_parent"
             android:layout_marginTop="72dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
             tools:listitem="@layout/song_list_layout" />
 
+        <TextView android:id="@+id/placeholderMessage"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
     </FrameLayout>
 
