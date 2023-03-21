@@ -2,6 +2,7 @@
 <resources>
     <dimen name="button_text_size">22sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
+    <dimen name="button_update_radius">54dp</dimen>
     <dimen name="button_height">220dp</dimen>
     <dimen name="icon_margin_top">19dp</dimen>
     <dimen name="icon_margin_bottom">18dp</dimen>
@@ -17,5 +18,16 @@
     <dimen name="track_image_width">45dp</dimen>
     <dimen name="artist_time_text_size">11sp</dimen>
     <dimen name="song_padding_start">8dp</dimen>
+    <dimen name="search_imageview_width">120dp</dimen>
+    <dimen name="search_imageview_height">120dp</dimen>
+    <dimen name="search_imageview_marginTop">110dp</dimen>
+    <dimen name="search_textview_width">300dp</dimen>
+    <dimen name="search_textview_marginTop">16dp</dimen>
+    <dimen name="search_side_margins_size">24dp</dimen>
+    <dimen name="search_text_size">19sp</dimen>
+    <dimen name="search_button_text_size">14sp</dimen>
+
+
+
 
 </resources>

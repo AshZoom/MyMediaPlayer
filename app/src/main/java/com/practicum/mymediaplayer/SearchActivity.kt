@@ -1,5 +1,6 @@
 package com.practicum.mymediaplayer
 
+import android.app.UiModeManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +25,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView
+    private lateinit var trackNotFound: ImageView
     private lateinit var trackList: RecyclerView
+    private lateinit var updateConnection: Button
 
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
@@ -42,6 +47,10 @@ class SearchActivity : AppCompatActivity() {
     private val tracks = ArrayList<Track>()
 
     private val adapter = TrackAdapter()
+
+    //в методе showmessage(): если connectionError=true-проблемы со связью
+    //если connectionError=false-трек не найден
+    private var connectionError = false
 
 
     //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
@@ -68,8 +77,10 @@ class SearchActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.button_arrow_back_searching)
         val clearButton = findViewById<AppCompatButton>(R.id.clearTextSearch)
+        updateConnection = findViewById(R.id.button_update)
         inputTextSearch = findViewById(R.id.inputTextSearch)
         placeholderMessage = findViewById(R.id.placeholderMessage)
+        trackNotFound = findViewById(R.id.track_not_found)
         trackList = findViewById(R.id.track_recyclerView)
 
         adapter.tracks = tracks
@@ -103,60 +114,85 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
+
+
         inputTextSearch.addTextChangedListener(searchTextWatcher)
+
 
 // обработка нажатия на кнопку Done в меню клавиатуры
 
         inputTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-// поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
+                searching()
 
-                iTunesService.search(inputTextSearch.text.toString()).enqueue(
-                    object : Callback<ITunesResponse> {
-
-                        override fun onResponse(
-                            call: Call<ITunesResponse>,
-                            response: Response<ITunesResponse>
-
-                        ) {
-                            if (response.code() == 200) {
-                                tracks.clear()
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.addAll(response.body()?.results!!)
-                                    adapter.notifyDataSetChanged()
-                                }
-                                if (tracks.isEmpty()) {
-                                    showMessage(getString(R.string.nothing_found), "")
-                                } else {
-                                    showMessage("", "")
-                                }
-                            } else {
-                                showMessage(
-                                    getString(R.string.something_went_wrong),
-                                    response.code().toString()
-                                )
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                            showMessage(
-                                getString(R.string.something_went_wrong),
-                                t.message.toString()
-                            )
-                        }
-                    })
-                true
             }
-            false
+
+            true
+        }
+        false
+
+        updateConnection.setOnClickListener {
+            searching()
         }
 
 
     }
 
 
+    // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
+    fun searching() {
+
+        iTunesService.search(inputTextSearch.text.toString()).enqueue(
+            object : Callback<ITunesResponse> {
+
+                override fun onResponse(
+                    call: Call<ITunesResponse>,
+                    response: Response<ITunesResponse>
+
+                ) {
+                    if (response.code() == 200) {
+                        tracks.clear()
+                        updateConnection.visibility = View.GONE
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            tracks.addAll(response.body()?.results!!)
+                            adapter.notifyDataSetChanged()
+                        }
+                        if (tracks.isEmpty()) {
+                            connectionError = false
+                            showMessage(
+                                getString(R.string.nothing_found),
+                                "",
+                                connectionError
+                            )
+                        } else {
+                            showMessage("", "", connectionError)
+                        }
+                    } else {
+                        connectionError = true
+                        showMessage(
+                            getString(R.string.something_went_wrong),
+                            response.code().toString(), connectionError
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                    connectionError = true
+                    showMessage(
+                        getString(R.string.something_went_wrong),
+                        t.message.toString(), connectionError
+                    )
+                    updateConnection.visibility = View.VISIBLE
+                }
+            })
+
+    }
+
+    //класс  ответа от сервера
     class ITunesResponse(val resultCount: Int, val results: List<Track>)
 
+    //интерфейс API запроса к серверу
     interface ITunesApi {
         @GET("/search?entity=song")
         fun search(@Query("term") text: String): Call<ITunesResponse>
@@ -178,10 +214,30 @@ class SearchActivity : AppCompatActivity() {
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    //Метод отображения сообщений об ошибках:
+    // 1.Трек не найден и
+    // 2.Отсутсвие связи  с сервером
+    //uiModeManager используем для переключения изображения для темной и светлой темы
+    fun showMessage(text: String, additionalMessage: String, connection: Boolean) {
 
-    fun showMessage(text: String, additionalMessage: String) {
+        val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+
         if (text.isNotEmpty()) {
+            if (connection) {
+                when (uiModeManager.nightMode) {
+                    UiModeManager.MODE_NIGHT_NO -> trackNotFound.setImageResource(R.drawable.il_internet_light_mode)
+                    UiModeManager.MODE_NIGHT_YES -> trackNotFound.setImageResource(R.drawable.il_internet_dark_mode)
+                }
+            } else {
+                trackNotFound.setImageResource(R.drawable.il_search_light_mode)
+                when (uiModeManager.nightMode) {
+                    UiModeManager.MODE_NIGHT_NO -> trackNotFound.setImageResource(R.drawable.il_search_light_mode)
+                    UiModeManager.MODE_NIGHT_YES -> trackNotFound.setImageResource(R.drawable.il_search_dark_mode)
+                }
+
+            }
             placeholderMessage.visibility = View.VISIBLE
+            trackNotFound.visibility = View.VISIBLE
             tracks.clear()
             adapter.notifyDataSetChanged()
             placeholderMessage.text = text
@@ -191,8 +247,11 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             placeholderMessage.visibility = View.GONE
+            trackNotFound.visibility = View.GONE
         }
     }
+
+
 }
 
 

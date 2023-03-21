@@ -35,4 +35,12 @@
 
     </style>
 
+    <style name="ButtonUpdate" parent="Theme.MyMediaPlayer">
+
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="cornerRadius">@dimen/button_update_radius</item>
+
+    </style>
+
 </resources>
