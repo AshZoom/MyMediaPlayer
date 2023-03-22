@@ -166,7 +166,7 @@ class SearchActivity : AppCompatActivity() {
                                 connectionError
                             )
                         } else {
-                            showMessage("", "", connectionError)
+                            showMessage()
                         }
                     } else {
                         connectionError = true
@@ -189,15 +189,6 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    //класс  ответа от сервера
-    class ITunesResponse(val resultCount: Int, val results: List<Track>)
-
-    //интерфейс API запроса к серверу
-    interface ITunesApi {
-        @GET("/search?entity=song")
-        fun search(@Query("term") text: String): Call<ITunesResponse>
-    }
-
 
     // Метод clearButtonVisibility устанавливает видимость кнопки сброса текста.
     private fun changeButtonVisibility(s: CharSequence?): Int {
@@ -216,25 +207,19 @@ class SearchActivity : AppCompatActivity() {
 
     //Метод отображения сообщений об ошибках:
     // 1.Трек не найден и
-    // 2.Отсутсвие связи  с сервером
-    //uiModeManager используем для переключения изображения для темной и светлой темы
-    fun showMessage(text: String, additionalMessage: String, connection: Boolean) {
+    // 2.Отсутствие связи  с сервером
 
-        val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
+    fun showMessage(
+        text: String = "",
+        additionalMessage: String = "",
+        connection: Boolean = false
+    ) {
         if (text.isNotEmpty()) {
             if (connection) {
-                when (uiModeManager.nightMode) {
-                    UiModeManager.MODE_NIGHT_NO -> trackNotFound.setImageResource(R.drawable.il_internet_light_mode)
-                    UiModeManager.MODE_NIGHT_YES -> trackNotFound.setImageResource(R.drawable.il_internet_dark_mode)
-                }
+                trackNotFound.setImageResource(R.drawable.il_internet_light_mode)
             } else {
                 trackNotFound.setImageResource(R.drawable.il_search_light_mode)
-                when (uiModeManager.nightMode) {
-                    UiModeManager.MODE_NIGHT_NO -> trackNotFound.setImageResource(R.drawable.il_search_light_mode)
-                    UiModeManager.MODE_NIGHT_YES -> trackNotFound.setImageResource(R.drawable.il_search_dark_mode)
-                }
-
             }
             placeholderMessage.visibility = View.VISIBLE
             trackNotFound.visibility = View.VISIBLE

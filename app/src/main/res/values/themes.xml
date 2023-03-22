@@ -39,4 +39,11 @@
 
     </style>
 
+    <style name="ImageViewSearch" parent="Theme.MyMediaPlayer">
+
+        <item name="android:src">@drawable/il_search_light_mode</item>
+
+    </style>
+
+
 </resources>
