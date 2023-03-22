@@ -1,27 +1,65 @@
 package com.practicum.mymediaplayer
 
+import android.app.UiModeManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
+
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputTextSearch: EditText
+    private lateinit var placeholderMessage: TextView
+    private lateinit var trackNotFound: ImageView
+    private lateinit var trackList: RecyclerView
+    private lateinit var updateConnection: Button
+
+
+    private val iTunesBaseUrl = "https://itunes.apple.com"
+
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(iTunesBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val iTunesService = retrofit.create(ITunesApi::class.java)
+
+    private val tracks = ArrayList<Track>()
+
+    private val adapter = TrackAdapter()
+
+    //в методе showmessage(): если connectionError=true-проблемы со связью
+    //если connectionError=false-трек не найден
+    private var connectionError = false
+
+
+    //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
+    //inputTextSearch.text.toString() - текст который нужно сохранить
 
     companion object {
         private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
     }
 
-    //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
-    //inputTextSearch.text.toString() - текст который нужно сохранить
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(TEXT_EDITTEXT, inputTextSearch.text.toString())
@@ -37,56 +75,26 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val track1 = Track(
-            resources.getString(R.string.nameTrack1),
-            resources.getString(R.string.artistTrack1),
-            resources.getString(R.string.timeTrack1),
-            resources.getString(R.string.imageUrlTrack1)
-        )
-
-        val track2 = Track(
-            resources.getString(R.string.nameTrack2),
-            resources.getString(R.string.artistTrack2),
-            resources.getString(R.string.timeTrack2),
-            resources.getString(R.string.imageUrlTrack2)
-        )
-
-        val track3 = Track(
-            resources.getString(R.string.nameTrack3),
-            resources.getString(R.string.artistTrack3),
-            resources.getString(R.string.timeTrack3),
-            resources.getString(R.string.imageUrlTrack3)
-        )
-
-        val track4 = Track(
-            resources.getString(R.string.nameTrack4),
-            resources.getString(R.string.artistTrack4),
-            resources.getString(R.string.timeTrack4),
-            resources.getString(R.string.imageUrlTrack4)
-        )
-
-        val track5 = Track(
-            resources.getString(R.string.nameTrack5),
-            resources.getString(R.string.artistTrack5),
-            resources.getString(R.string.timeTrack5),
-            resources.getString(R.string.imageUrlTrack5)
-        )
-
-        val trackRecycleView = findViewById<RecyclerView>(R.id.track_recyclerView)
-        val trackList: MutableList<Track> = mutableListOf(track1, track2, track3, track4, track5)
-        val trackAdapter = TrackAdapter(trackList)
-        trackRecycleView.adapter = trackAdapter
-
-
-        // код для  EditText
-
         val backButton = findViewById<Button>(R.id.button_arrow_back_searching)
-        inputTextSearch = findViewById(R.id.inputTextSearch)
         val clearButton = findViewById<AppCompatButton>(R.id.clearTextSearch)
+        updateConnection = findViewById(R.id.button_update)
+        inputTextSearch = findViewById(R.id.inputTextSearch)
+        placeholderMessage = findViewById(R.id.placeholderMessage)
+        trackNotFound = findViewById(R.id.track_not_found)
+        trackList = findViewById(R.id.track_recyclerView)
+
+        adapter.tracks = tracks
+        trackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        trackList.adapter = adapter
+
+
+        // выход из Activity_Search
 
         backButton.setOnClickListener {
             finish()
         }
+
+        // код для  EditText
 
         clearButton.setOnClickListener {
             inputTextSearch.setText("")
@@ -106,10 +114,81 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
+
+
         inputTextSearch.addTextChangedListener(searchTextWatcher)
 
 
+// обработка нажатия на кнопку Done в меню клавиатуры
+
+        inputTextSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                searching()
+
+            }
+
+            true
+        }
+        false
+
+        updateConnection.setOnClickListener {
+            searching()
+        }
+
+
     }
+
+
+    // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
+    fun searching() {
+
+        iTunesService.search(inputTextSearch.text.toString()).enqueue(
+            object : Callback<ITunesResponse> {
+
+                override fun onResponse(
+                    call: Call<ITunesResponse>,
+                    response: Response<ITunesResponse>
+
+                ) {
+                    if (response.code() == 200) {
+                        tracks.clear()
+                        updateConnection.visibility = View.GONE
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            tracks.addAll(response.body()?.results!!)
+                            adapter.notifyDataSetChanged()
+                        }
+                        if (tracks.isEmpty()) {
+                            connectionError = false
+                            showMessage(
+                                getString(R.string.nothing_found),
+                                "",
+                                connectionError
+                            )
+                        } else {
+                            showMessage()
+                        }
+                    } else {
+                        connectionError = true
+                        showMessage(
+                            getString(R.string.something_went_wrong),
+                            response.code().toString(), connectionError
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                    connectionError = true
+                    showMessage(
+                        getString(R.string.something_went_wrong),
+                        t.message.toString(), connectionError
+                    )
+                    updateConnection.visibility = View.VISIBLE
+                }
+            })
+
+    }
+
 
     // Метод clearButtonVisibility устанавливает видимость кнопки сброса текста.
     private fun changeButtonVisibility(s: CharSequence?): Int {
@@ -125,6 +204,39 @@ class SearchActivity : AppCompatActivity() {
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
+
+    //Метод отображения сообщений об ошибках:
+    // 1.Трек не найден и
+    // 2.Отсутствие связи  с сервером
+
+
+    fun showMessage(
+        text: String = "",
+        additionalMessage: String = "",
+        connection: Boolean = false
+    ) {
+        if (text.isNotEmpty()) {
+            if (connection) {
+                trackNotFound.setImageResource(R.drawable.il_internet_light_mode)
+            } else {
+                trackNotFound.setImageResource(R.drawable.il_search_light_mode)
+            }
+            placeholderMessage.visibility = View.VISIBLE
+            trackNotFound.visibility = View.VISIBLE
+            tracks.clear()
+            adapter.notifyDataSetChanged()
+            placeholderMessage.text = text
+            if (additionalMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } else {
+            placeholderMessage.visibility = View.GONE
+            trackNotFound.visibility = View.GONE
+        }
+    }
+
+
 }
 
 
