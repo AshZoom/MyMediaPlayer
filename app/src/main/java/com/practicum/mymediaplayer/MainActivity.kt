@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -11,8 +12,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         //Activity для перехода на экран "Поиск"
-        //
+
         val findButton = findViewById<Button>(R.id.button_find)
         findButton.setOnClickListener {
             navigateTo(SearchActivity::class.java)

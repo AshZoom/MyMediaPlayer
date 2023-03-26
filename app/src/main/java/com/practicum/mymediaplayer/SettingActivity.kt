@@ -3,11 +3,17 @@ package com.practicum.mymediaplayer
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.switchmaterial.SwitchMaterial
+
+
+const val PLAYLIST_MAKER_PREFERENCE = "playlist_maker_preferences"
 
 
 class SettingActivity : AppCompatActivity() {
@@ -17,9 +23,27 @@ class SettingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         findViewById<Button>(R.id.button_arrow_back).setOnClickListener { finish() }
 
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        //устанавливаем переключатель в  режим Dark или Light
+
+        themeSwitcher.isChecked = sharedPrefs.getBoolean(PLAYLIST_MAKER_PREFERENCE, false)
+
+
         shareApp()
         writeToSupport()
         userAgreement()
+
+
+        //отслеживаем состояние переключателя и переключаем  режим Dark или Light
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+            sharedPrefs.edit()
+                .putBoolean(PLAYLIST_MAKER_PREFERENCE, checked)
+                .apply()
+        }
 
     }
 
