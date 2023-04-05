@@ -73,6 +73,56 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/song_list_layout" />
 
+        <LinearLayout
+            android:id="@+id/history_layout"
+            android:layout_marginTop="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <TextView
+                android:id="@+id/you_looking_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="@dimen/search_side_margins_size"
+                android:fontFamily="@font/ys_display_medium"
+                android:textAlignment="center"
+                android:text="@string/youSearched"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="@dimen/search_text_size" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_track_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/song_list_layout" />
+
+            <Button
+                android:id="@+id/button_clear_history"
+                style="@style/ButtonUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/search_side_margins_size"
+                android:fontFamily="@font/ys_display_medium"
+                android:text="@string/clearHistory"
+                android:textAllCaps="false"
+                android:textSize="@dimen/search_button_text_size"
+                tools:ignore="SpeakableTextPresentCheck"
+                app:cornerRadius="54dp"/>
+
+</LinearLayout>
+
 
         <LinearLayout
 

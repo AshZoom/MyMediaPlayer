@@ -41,5 +41,7 @@
         The download failed. Check your internet connection.
     </string>
     <string name="update">Update</string>
+    <string name="youSearched">You are searched</string>
+    <string name="clearHistory">Clear history</string>
 
 </resources>

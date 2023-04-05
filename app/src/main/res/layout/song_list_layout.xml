@@ -8,6 +8,7 @@
     android:theme="@style/SecondaryScreen">
 
     <LinearLayout
+        android:id="@+id/song_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -70,6 +71,23 @@
                     android:text="@string/timeTrack1"
                     android:textColor="@color/color_switch_knob_light"
                     android:textSize="@dimen/artist_time_text_size" />
+<!-- Отображение id трека-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_dot_ic"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/track_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:text="@string/timeTrack1"
+                    android:textColor="@color/color_switch_knob_light"
+                    android:textSize="@dimen/artist_time_text_size"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 

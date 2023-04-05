@@ -14,6 +14,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 
 const val PLAYLIST_MAKER_PREFERENCE = "playlist_maker_preferences"
+const val DARK_THEME_PREFERENCE="dark_theme_preference"
 
 
 class SettingActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class SettingActivity : AppCompatActivity() {
 
         //устанавливаем переключатель в  режим Dark или Light
 
-        themeSwitcher.isChecked = sharedPrefs.getBoolean(PLAYLIST_MAKER_PREFERENCE, false)
+        themeSwitcher.isChecked = sharedPrefs.getBoolean(DARK_THEME_PREFERENCE, false)
 
 
         shareApp()
@@ -41,7 +42,7 @@ class SettingActivity : AppCompatActivity() {
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as App).switchTheme(checked)
             sharedPrefs.edit()
-                .putBoolean(PLAYLIST_MAKER_PREFERENCE, checked)
+                .putBoolean(DARK_THEME_PREFERENCE, checked)
                 .apply()
         }
 
