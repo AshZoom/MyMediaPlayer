@@ -70,20 +70,15 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         removeDouble()
-        val size = trackSaved.size
-        for (i in 0 until size) {
 
-            if (trackNumber == trackSaved[i].trackId.toInt())
-                trackSaved.removeAt(i)
-            break
-        }
-/*
+        trackSaved.removeIf { it.trackId.toInt() == trackNumber }
+
+       /*
         Toast.makeText(
             v?.context,
             "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
             Toast.LENGTH_SHORT
         ).show()
-
  */
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
@@ -105,7 +100,7 @@ class TrackViewHolder(parent: ViewGroup) :
     //ограничение количества сохраненных треков (10)
     fun limitSizeOfTrackSaved() {
         val maxSize = 10
-        if (trackSaved.size > maxSize) {
+        if (trackSaved.size >= maxSize) {
             // расчитываем сколько треков нужно удалить
             val numExcessObjects = trackSaved.size - maxSize
 

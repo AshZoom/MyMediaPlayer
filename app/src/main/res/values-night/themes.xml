@@ -35,6 +35,8 @@
 
     </style>
 
+
+
     <style name="ButtonUpdate" parent="Theme.MyMediaPlayer">
 
         <item name="android:backgroundTint">@color/white</item>

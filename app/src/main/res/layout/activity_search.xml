@@ -37,7 +37,6 @@
 
         <EditText
             android:id="@+id/inputTextSearch"
-            style="@style/MyEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/round_edittext_background"
@@ -47,13 +46,15 @@
             android:focusable="true"
             android:fontFamily="@font/ys_text_regular"
             android:hint="@string/input_hint"
+            android:textColorHint="@color/black"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="20"
             android:paddingStart="13dp"
             android:paddingEnd="12dp"
             android:singleLine="true"
-            android:textSize="@dimen/setting_text_size" />
+            android:textSize="@dimen/setting_text_size"
+            android:textColor="@color/black"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clearTextSearch"
