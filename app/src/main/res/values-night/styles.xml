@@ -40,5 +40,9 @@
 
     </style>
 
+    <style name="HintText" parent="@android:style/TextAppearance">
+        <item name="android:textColorHint">@color/black</item>
+    </style>
+
 
 </resources>

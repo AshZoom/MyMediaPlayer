@@ -18,6 +18,10 @@
         <item name="android:textSize">@dimen/setting_text_size</item>
     </style>
 
+    <style name="HintText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/color_switch_knob_light</item>
+    </style>
+
     <style name="LinearLayoutStyleSetting">
 
         <item name="android:layout_width">match_parent</item>
@@ -81,6 +85,7 @@
 
     <style name="MyEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">@color/color_switch_knob_light</item>
     </style>
 
     <style name="ClearButtonStyle" parent="android:Widget.Holo.Button.Borderless">

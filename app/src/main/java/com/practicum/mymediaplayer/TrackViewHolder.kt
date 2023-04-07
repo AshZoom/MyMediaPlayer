@@ -70,7 +70,7 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         removeDouble()
-
+        //удаляем из списка выбранных треков трек с одинаковым trackId
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
 
        /*
