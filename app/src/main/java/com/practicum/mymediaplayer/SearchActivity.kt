@@ -1,7 +1,7 @@
 package com.practicum.mymediaplayer
 
-import android.app.UiModeManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,19 +11,23 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+
+
+val trackSaved = ArrayList<Track>()
+const val TRACKS_SAVED = "tracks_saved"
 
 
 class SearchActivity : AppCompatActivity() {
@@ -32,40 +36,37 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var trackNotFound: ImageView
     private lateinit var trackList: RecyclerView
     private lateinit var updateConnection: Button
+    private lateinit var youLookingFor: LinearLayout
+    private lateinit var searchTrackList: RecyclerView
 
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
-
-
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     private val iTunesService = retrofit.create(ITunesApi::class.java)
 
     private val tracks = ArrayList<Track>()
-
     private val adapter = TrackAdapter()
+    private val adapterSavedTracks = TrackSavedAdapter()
 
     //в методе showmessage(): если connectionError=true-проблемы со связью
     //если connectionError=false-трек не найден
     private var connectionError = false
 
 
-    //TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
+    //работа с Edit Text:
+    // TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
     //inputTextSearch.text.toString() - текст который нужно сохранить
 
-    companion object {
-        private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
-    }
-
+    //сохранение состояния EditText в жизненном цикле SearchActivity после onStop
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(TEXT_EDITTEXT, inputTextSearch.text.toString())
     }
 
-    //получаем сохранённый текст
+    //получаем сохранённый текст из EditText в жизненном цикле SearchActivity после onStart
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         inputTextSearch.setText(savedInstanceState.getString(TEXT_EDITTEXT))
@@ -77,71 +78,128 @@ class SearchActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.button_arrow_back_searching)
         val clearButton = findViewById<AppCompatButton>(R.id.clearTextSearch)
+        val clearHistory = findViewById<Button>(R.id.button_clear_history)
+        youLookingFor = findViewById(R.id.history_layout)
         updateConnection = findViewById(R.id.button_update)
         inputTextSearch = findViewById(R.id.inputTextSearch)
         placeholderMessage = findViewById(R.id.placeholderMessage)
         trackNotFound = findViewById(R.id.track_not_found)
         trackList = findViewById(R.id.track_recyclerView)
+        searchTrackList = findViewById(R.id.search_track_recyclerView)
 
+
+        //адаптер для треков полученных от сервера
         adapter.tracks = tracks
         trackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         trackList.adapter = adapter
 
+        //адаптер для сохраненных треков
+        adapterSavedTracks.trackSaved = trackSaved
+        searchTrackList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        searchTrackList.adapter = adapterSavedTracks
+        adapterSavedTracks.notifyDataSetChanged()
+
+        //считываем треки, сохраненные в SharPrefernces
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+        trackSaved.addAll(readFromSP(sharedPrefs))
 
         // выход из Activity_Search
-
         backButton.setOnClickListener {
             finish()
         }
 
-        // код для  EditText
+        //код для Истории поиска:
+        //если EditText в фокусе и строка поиска пустая 'История поиска' Visible, иначе GONE
+        inputTextSearch.setOnFocusChangeListener { view, hasFocus ->
 
+            if (hasFocus && inputTextSearch.text.isEmpty() && trackSaved.size != 0) {
+                youLookingFor.visibility = View.VISIBLE
+                trackList.visibility = View.GONE
+            } else {
+                youLookingFor.visibility = View.GONE
+                trackList.visibility = View.VISIBLE
+            }
+            clearDisplay()
+        }
+
+        //если EditText в фокусе и пользователь вводит  текст  'История поиска'  GONE
+        inputTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                if (inputTextSearch.hasFocus() && p0?.isEmpty() == true) {
+                    youLookingFor.visibility = View.VISIBLE
+                    trackList.visibility = View.GONE
+                } else {
+                    youLookingFor.visibility = View.GONE
+                    trackList.visibility = View.VISIBLE
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
+        // onClick слушатель для кнопки сброса текста
         clearButton.setOnClickListener {
             inputTextSearch.setText("")
             it.hideKeyboard()
         }
+
+
+        //видимость clearButton в строке EditText
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = changeButtonVisibility(s)
-
             }
 
             override fun afterTextChanged(s: Editable?) {
+
             }
-
         }
-
-
-
         inputTextSearch.addTextChangedListener(searchTextWatcher)
 
 
-// обработка нажатия на кнопку Done в меню клавиатуры
-
+        // обработка нажатия на кнопку Done в меню клавиатуры
         inputTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                 searching()
 
+                true
             }
-
-            true
+            false
         }
-        false
 
         updateConnection.setOnClickListener {
             searching()
         }
+        //очищаем список сохраненных треков по нажатию Clear History(Очистить историю)
 
-
+        clearHistory.setOnClickListener {
+            trackSaved.clear()
+            val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+            writeToSP(sharedPrefs, trackSaved)
+            youLookingFor.visibility = View.GONE
+            adapterSavedTracks.notifyDataSetChanged()
+        }
     }
 
+    //сохраняем список выбранных треков в SharePreferences при выходе из SearchActivity
+    override fun onStop() {
+        super.onStop()
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+        writeToSP(sharedPrefs, trackSaved)
+        trackSaved.clear()
+    }
 
     // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
-    fun searching() {
+    private fun searching() {
 
         iTunesService.search(inputTextSearch.text.toString()).enqueue(
             object : Callback<ITunesResponse> {
@@ -157,6 +215,7 @@ class SearchActivity : AppCompatActivity() {
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
+                            adapterSavedTracks.notifyDataSetChanged()
                         }
                         if (tracks.isEmpty()) {
                             connectionError = false
@@ -189,7 +248,6 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
     // Метод clearButtonVisibility устанавливает видимость кнопки сброса текста.
     private fun changeButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -199,6 +257,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    // Метод , который скрывает клавиатуру
     private fun View.hideKeyboard() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -208,8 +267,6 @@ class SearchActivity : AppCompatActivity() {
     //Метод отображения сообщений об ошибках:
     // 1.Трек не найден и
     // 2.Отсутствие связи  с сервером
-
-
     fun showMessage(
         text: String = "",
         additionalMessage: String = "",
@@ -218,9 +275,11 @@ class SearchActivity : AppCompatActivity() {
         if (text.isNotEmpty()) {
             if (connection) {
                 trackNotFound.setImageResource(R.drawable.il_internet_light_mode)
+                updateConnection.visibility = View.VISIBLE
             } else {
                 trackNotFound.setImageResource(R.drawable.il_search_light_mode)
             }
+            youLookingFor.visibility = View.GONE
             placeholderMessage.visibility = View.VISIBLE
             trackNotFound.visibility = View.VISIBLE
             tracks.clear()
@@ -231,12 +290,36 @@ class SearchActivity : AppCompatActivity() {
                     .show()
             }
         } else {
-            placeholderMessage.visibility = View.GONE
-            trackNotFound.visibility = View.GONE
+            clearDisplay()
+
         }
     }
 
+    //пустой экран (без сообщений о проблемах со связью и не найденных треках)
+    private fun clearDisplay() {
+        placeholderMessage.visibility = View.GONE
+        trackNotFound.visibility = View.GONE
+        updateConnection.visibility = View.GONE
+    }
 
+
+    // чтение из SharedPreferences
+    private fun readFromSP(sharedPreferences: SharedPreferences): Array<Track> {
+        val json = sharedPreferences.getString(TRACKS_SAVED, null) ?: return emptyArray()
+        return Gson().fromJson(json, Array<Track>::class.java)
+    }
+
+    // запись в SharedPreferences
+    private fun writeToSP(sharedPreferences: SharedPreferences, tracks: ArrayList<Track>) {
+        val json = Gson().toJson(tracks)
+        sharedPreferences.edit()
+            .putString(TRACKS_SAVED, json)
+            .apply()
+    }
+
+    companion object {
+        private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+    }
 }
 
 

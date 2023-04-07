@@ -19,6 +19,7 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder =
         TrackViewHolder(parent)
 
@@ -28,36 +29,4 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun getItemCount(): Int = tracks.size
 
-}
-
-class TrackViewHolder(parent: ViewGroup) :
-    RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.song_list_layout, parent, false)
-    ) {
-
-    var imageViewHolder: ImageView = itemView.findViewById(R.id.image)
-    var trackNameView: TextView = itemView.findViewById(R.id.track_name)
-    var artistNameView: TextView = itemView.findViewById(R.id.artist_name)
-    var trackTimeView: TextView = itemView.findViewById(R.id.track_time)
-
-    fun bind(model: Track) {
-
-        Glide.with(itemView)
-            .load(model.artworkUrl100)
-            .transform(
-                RoundedCorners(
-                    itemView.resources
-                        .getDimensionPixelSize(R.dimen.setting_rounded_Corners)
-                )
-            )
-            .placeholder(R.mipmap.ic_vector)
-            .into(imageViewHolder)
-
-        trackNameView.text = model.trackName
-        artistNameView.text = model.artistName
-        trackTimeView.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
-
-    }
 }

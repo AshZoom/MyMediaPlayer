@@ -3,6 +3,7 @@
 
     <style name="MyEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textColorHint">@color/black</item>
     </style>
 
     <style name="ClearButtonStyle" parent="android:Widget.Holo.Button.Borderless">
@@ -37,6 +38,10 @@
         <item name="iconPadding">@dimen/setting_icon_text</item>
         <item name="iconTint">@color/black</item>
 
+    </style>
+
+    <style name="HintText" parent="@android:style/TextAppearance">
+        <item name="android:textColorHint">@color/black</item>
     </style>
 
 

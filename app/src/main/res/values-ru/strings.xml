@@ -20,4 +20,6 @@
         Загрузка не удалась. Проверьте подключение к Интернет.
     </string>
     <string name="update">Обновить</string>
+    <string name="youSearched">Вы искали</string>
+    <string name="clearHistory">Очистить историю</string>
 </resources>

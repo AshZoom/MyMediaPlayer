@@ -35,6 +35,8 @@
 
     </style>
 
+
+
     <style name="ButtonUpdate" parent="Theme.MyMediaPlayer">
 
         <item name="android:backgroundTint">@color/white</item>
@@ -46,6 +48,12 @@
     <style name="ImageViewSearch" parent="Theme.MyMediaPlayer">
 
         <item name="android:src">@drawable/il_search_light_mode</item>
+
+    </style>
+
+    <style name="SwitchButton" parent="Theme.MyMediaPlayer">
+
+        <item name="android:src">@drawable/switch_off</item>
 
     </style>
 

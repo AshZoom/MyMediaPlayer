@@ -43,7 +43,14 @@
             android:text="@string/dark_mode" />
 
 
-        <androidx.appcompat.widget.SwitchCompat
+        <!--    <androidx.appcompat.widget.SwitchCompat
+                style="@style/SwitchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        -->
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
+            style="@style/SwitchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
