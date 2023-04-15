@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="btn_text_color">#FFFFFF</color>
+    <color name="player_like_button">#40FFFFFF</color>
+    <color name="fab_background_play_button">#FFFFFF</color>
+    <color name="fab_play_button">#FF000000</color>
+
+
+</resources>
