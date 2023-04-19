@@ -28,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val trackSaved = ArrayList<Track>()
 const val TRACKS_SAVED = "tracks_saved"
+const val TRACK = "track"
 
 
 class SearchActivity : AppCompatActivity() {
@@ -170,7 +171,6 @@ class SearchActivity : AppCompatActivity() {
         inputTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searching()
-
                 true
             }
             false
@@ -196,6 +196,33 @@ class SearchActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
         writeToSP(sharedPrefs, trackSaved)
         trackSaved.clear()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+        writeToSP(sharedPrefs, trackSaved)
+        //trackSaved.clear()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //адаптер для сохраненных треков
+        adapterSavedTracks.trackSaved = trackSaved
+        searchTrackList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        searchTrackList.adapter = adapterSavedTracks
+        adapterSavedTracks.notifyDataSetChanged()
+
+        //считываем треки, сохраненные в SharPrefernces
+        val sharedPrefsPause = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
+        trackSaved.addAll(readFromSP(sharedPrefsPause))
+        //удаляем одинаковые треки из списка сохраненных треков
+        val distinctList = trackSaved.distinct()
+        trackSaved.clear()
+        //формируем новый список сохраненных треков
+        trackSaved.addAll(distinctList)
     }
 
     // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке

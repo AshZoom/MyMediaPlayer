@@ -229,16 +229,16 @@
             tools:text="Yesterday (Remastered 2009)" />
 
         <TextView
-            android:id="@+id/release_date_data"
+            android:id="@+id/release_year_date"
             style="@style/TrackData"
             app:layout_constraintBottom_toBottomOf="@id/year"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintStart_toEndOf="@id/textsBarrier"
             app:layout_constraintTop_toTopOf="@id/year"
-            tools:text="1965" />
+            tools:text="2023" />
 
         <TextView
-            android:id="@+id/primary_genre_name"
+            android:id="@+id/genre_name"
             style="@style/TrackData"
             app:layout_constraintBottom_toBottomOf="@id/genre"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"

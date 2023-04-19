@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import java.util.Locale
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder =
         TrackViewHolder(parent)
