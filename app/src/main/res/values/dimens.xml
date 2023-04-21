@@ -38,11 +38,9 @@
     <dimen name="margin_size_8">8dp</dimen>
     <dimen name="margin_size_12">12dp</dimen>
     <dimen name="margin_size_24">24dp</dimen>
-    <dimen name="margin_size_54">54dp</dimen>
     <dimen name="margin_size_28">28dp</dimen>
-
-
-
+    <dimen name="margin_size_39">39dp</dimen>
+    <dimen name="margin_size_54">54dp</dimen>
 
 
 </resources>

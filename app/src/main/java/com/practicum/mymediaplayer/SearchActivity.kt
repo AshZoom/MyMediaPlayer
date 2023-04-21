@@ -131,7 +131,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                if (inputTextSearch.hasFocus() && p0?.isEmpty() == true) {
+                if (inputTextSearch.hasFocus() && p0?.isEmpty() == true&& trackSaved.size != 0) {
                     youLookingFor.visibility = View.VISIBLE
                     trackList.visibility = View.GONE
                 } else {
@@ -158,6 +158,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = changeButtonVisibility(s)
+                clearDisplay()
             }
 
             override fun afterTextChanged(s: Editable?) {

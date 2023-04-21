@@ -29,7 +29,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_audio_player)
 
         backMenu()
-        TrackInfo()
+        trackInfo()
 
     }
 
@@ -41,7 +41,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun TrackInfo() {
+    private fun trackInfo() {
 
         val track = trackString
         trackName = findViewById(R.id.track_name)
