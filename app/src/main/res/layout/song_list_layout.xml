@@ -89,6 +89,7 @@
                     android:textSize="@dimen/artist_time_text_size"
                     android:visibility="invisible"/>
 
+
             </LinearLayout>
 
         </LinearLayout>

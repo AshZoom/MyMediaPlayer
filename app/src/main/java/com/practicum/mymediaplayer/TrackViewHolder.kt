@@ -1,32 +1,37 @@
 package com.practicum.mymediaplayer
 
+
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.*
 
+lateinit var trackString: Track
 
 class TrackViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.song_list_layout, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.song_list_layout, parent, false)
     ), View.OnClickListener {
-
     //отслеживаем выбор трека в списке треков на экране для сохранения
-
     val songLayout: LinearLayout = itemView.findViewById(R.id.song_layout)
 
     init {
         songLayout.setOnClickListener(this)
+
     }
+
+
+    lateinit var primaryGenreName: String
+    lateinit var country: String
+    lateinit var releaseDate: String
+    lateinit var collectionName: String
+    lateinit var diskCover: String
 
     private var imageViewHolder: ImageView = itemView.findViewById(R.id.image)
     private var trackNameView: TextView = itemView.findViewById(R.id.track_name)
@@ -34,11 +39,8 @@ class TrackViewHolder(parent: ViewGroup) :
     private var trackTimeView: TextView = itemView.findViewById(R.id.track_time)
     private var trackId: TextView = itemView.findViewById(R.id.track_id)
     var trackMill: Long = 0
-    var diskCover: String = ""
-
 
     fun bind(model: Track) {
-
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .transform(
@@ -54,36 +56,49 @@ class TrackViewHolder(parent: ViewGroup) :
         trackNameView.text = model.trackName
         artistNameView.text = model.artistName
         trackId.text = model.trackId
+        primaryGenreName = model.primaryGenreName
+        country = model.country
+        releaseDate = model.releaseDate
+        collectionName = model.collectionName
         /* преобразуем время трека из мс в формат ММ:СЕК */
         trackTimeView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
-
     }
 
     //обработка нажатия на трек из списка
     override fun onClick(v: View?) {
         // Handle item click here
         trackSaved.reverse()
-        val trackString = Track(
-            "${trackId.text}", "${trackNameView.text}", "${artistNameView.text}",
-            trackMill, diskCover
+        trackString = Track(
+            "${trackId.text}",
+            "${trackNameView.text}",
+            "${artistNameView.text}",
+            trackMill,
+            diskCover,
+            collectionName,
+            releaseDate,
+            primaryGenreName,
+            country
         )
         val trackNumber = trackString.trackId.toInt()
-        removeDouble()
-        //удаляем из списка выбранных треков трек с одинаковым trackId
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
 
-       /*
         Toast.makeText(
             v?.context,
             "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
             Toast.LENGTH_SHORT
         ).show()
- */
+
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
+        //удаляем из списка выбранных треков трек с одинаковым trackId
         removeDouble()
         trackSaved.reverse()
+
+
+        //gереход к экрану AudioPlayerActivity
+        val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
+        itemView.context.startActivity(intent)
 
     }
 
@@ -103,7 +118,6 @@ class TrackViewHolder(parent: ViewGroup) :
         if (trackSaved.size >= maxSize) {
             // расчитываем сколько треков нужно удалить
             val numExcessObjects = trackSaved.size - maxSize
-
             // удаляем треки
             for (i in 0..numExcessObjects) {
                 trackSaved.removeAt(i)

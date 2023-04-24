@@ -22,4 +22,15 @@
     <string name="update">Обновить</string>
     <string name="youSearched">Вы искали</string>
     <string name="clearHistory">Очистить историю</string>
+    <string name="cover_image"></string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="add_to_favorite">Добавить в избранное</string>
+    <string name="play">Прослушать трек</string>
+    <string name="playing_time">0:30</string>
+    <string name="track_time">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+
 </resources>

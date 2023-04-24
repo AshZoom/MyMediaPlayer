@@ -16,5 +16,9 @@
     <color name="color_switch_knob_light">#AEAFB4</color>
     <color name="color_switch_track_light">#E6E8EB</color>
     <color name="color_switch_night">#3772E7</color>
+    <color name="player_like_button">#401A1B22</color>
+    <color name="gray_light">#AEAFB4</color>
+    <color name="fab_background_play_button">#FF000000</color>
+    <color name="fab_play_button">#FFFFFFFF</color>
 
 </resources>
