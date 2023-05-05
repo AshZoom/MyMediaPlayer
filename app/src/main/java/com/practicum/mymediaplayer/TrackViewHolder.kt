@@ -96,7 +96,7 @@ class TrackViewHolder(parent: ViewGroup) :
         trackSaved.reverse()
 
 
-        //gереход к экрану AudioPlayerActivity
+        //переход к экрану AudioPlayerActivity
         val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
         itemView.context.startActivity(intent)
 

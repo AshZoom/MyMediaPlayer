@@ -3,6 +3,8 @@ package com.practicum.mymediaplayer
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -28,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val trackSaved = ArrayList<Track>()
 const val TRACKS_SAVED = "tracks_saved"
-const val TRACK = "track"
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -41,7 +43,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchTrackList: RecyclerView
 
 
-    private val iTunesBaseUrl = "https://itunes.apple.com"
+    //private val iTunesBaseUrl = "https://itunes.apple.com"
+    private val iTunesBaseUrl = "http://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
@@ -87,6 +90,9 @@ class SearchActivity : AppCompatActivity() {
         trackNotFound = findViewById(R.id.track_not_found)
         trackList = findViewById(R.id.track_recyclerView)
         searchTrackList = findViewById(R.id.search_track_recyclerView)
+
+        val handler = Handler(Looper.getMainLooper())
+        val searchRunnable = Runnable { searching() }
 
 
         //адаптер для треков полученных от сервера
@@ -150,6 +156,10 @@ class SearchActivity : AppCompatActivity() {
             it.hideKeyboard()
         }
 
+        fun searchDebounce() {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
 
         //видимость clearButton в строке EditText
         val searchTextWatcher = object : TextWatcher {
@@ -159,6 +169,9 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = changeButtonVisibility(s)
                 clearDisplay()
+                if (inputTextSearch.text.isNotEmpty()) {
+                    searchDebounce()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -168,6 +181,8 @@ class SearchActivity : AppCompatActivity() {
         inputTextSearch.addTextChangedListener(searchTextWatcher)
 
 
+
+/*
         // обработка нажатия на кнопку Done в меню клавиатуры
         inputTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -176,7 +191,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
+*/
         updateConnection.setOnClickListener {
             searching()
         }
@@ -347,6 +362,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
 
