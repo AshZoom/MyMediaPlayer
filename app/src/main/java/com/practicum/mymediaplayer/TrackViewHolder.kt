@@ -2,6 +2,8 @@ package com.practicum.mymediaplayer
 
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +41,9 @@ class TrackViewHolder(parent: ViewGroup) :
     private var trackTimeView: TextView = itemView.findViewById(R.id.track_time)
     private var trackId: TextView = itemView.findViewById(R.id.track_id)
     var trackMill: Long = 0
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     fun bind(model: Track) {
         Glide.with(itemView)
@@ -95,15 +100,14 @@ class TrackViewHolder(parent: ViewGroup) :
         removeDouble()
         trackSaved.reverse()
 
-
-        //gереход к экрану AudioPlayerActivity
-        val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
-        itemView.context.startActivity(intent)
-
+        //переход к экрану AudioPlayerActivity
+        if (clickDebounce()) {
+            val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
+            itemView.context.startActivity(intent)
+        }
     }
 
     //удаляем дублирующиеся треки из спиcка сохраненных
-
     fun removeDouble() {
         //удаляем одинаковые треки из списка сохраненных треков
         val distinctList = trackSaved.distinct()
@@ -124,6 +128,18 @@ class TrackViewHolder(parent: ViewGroup) :
             }
         }
     }
+    //Разрешаем пользователю нажимать на элементы списка треков не чаще одного раза в секунду
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
 
 }
