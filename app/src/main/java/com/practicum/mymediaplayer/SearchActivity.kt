@@ -42,8 +42,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var youLookingFor: LinearLayout
     private lateinit var searchTrackList: RecyclerView
     private lateinit var progressBar: ProgressBar
-
-
     //private val iTunesBaseUrl = "https://itunes.apple.com"
     //запрос на сервер iTunes без VPN
     private val iTunesBaseUrl = "http://itunes.apple.com"
@@ -52,15 +50,12 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
-
     private val tracks = ArrayList<Track>()
     private val adapter = TrackAdapter()
     private val adapterSavedTracks = TrackSavedAdapter()
-
     //в методе showmessage(): если connectionError=true-проблемы со связью
     //если connectionError=false-трек не найден
     private var connectionError = false
-
 
     //работа с Edit Text:
     // TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
@@ -93,7 +88,7 @@ class SearchActivity : AppCompatActivity() {
         trackNotFound = findViewById(R.id.track_not_found)
         trackList = findViewById(R.id.track_recyclerView)
         searchTrackList = findViewById(R.id.search_track_recyclerView)
-        progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar = findViewById(R.id.progressBar)
         //адаптер для треков полученных от сервера
         adapter.tracks = tracks
         trackList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -106,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
         searchTrackList.adapter = adapterSavedTracks
         adapterSavedTracks.notifyDataSetChanged()
 
-        //считываем треки, сохраненные в SharPrefernces
+        //считываем треки, сохраненные в SharedPrefernces
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
         trackSaved.addAll(readFromSP(sharedPrefs))
 
@@ -199,7 +194,6 @@ class SearchActivity : AppCompatActivity() {
         writeToSP(sharedPrefs, trackSaved)
         trackSaved.clear()
     }
-
     override fun onPause() {
         super.onPause()
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
@@ -215,7 +209,6 @@ class SearchActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchTrackList.adapter = adapterSavedTracks
         adapterSavedTracks.notifyDataSetChanged()
-
         //считываем треки, сохраненные в SharPrefernces
         val sharedPrefsPause = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
         trackSaved.addAll(readFromSP(sharedPrefsPause))
@@ -277,7 +270,6 @@ class SearchActivity : AppCompatActivity() {
                     updateConnection.visibility = View.VISIBLE
                 }
             })
-
     }
 
     // Метод clearButtonVisibility устанавливает видимость кнопки сброса текста.
@@ -332,7 +324,6 @@ class SearchActivity : AppCompatActivity() {
         placeholderMessage.visibility = View.GONE
         trackNotFound.visibility = View.GONE
         updateConnection.visibility = View.GONE
-        //progressBar.visibility = View.GONE
     }
 
     // чтение из SharedPreferences

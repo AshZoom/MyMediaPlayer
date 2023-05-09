@@ -34,6 +34,7 @@ class TrackViewHolder(parent: ViewGroup) :
     lateinit var releaseDate: String
     lateinit var collectionName: String
     lateinit var diskCover: String
+    lateinit var previewUrl:String
 
     private var imageViewHolder: ImageView = itemView.findViewById(R.id.image)
     private var trackNameView: TextView = itemView.findViewById(R.id.track_name)
@@ -65,9 +66,11 @@ class TrackViewHolder(parent: ViewGroup) :
         country = model.country
         releaseDate = model.releaseDate
         collectionName = model.collectionName
+        previewUrl=model.previewUrl
         /* преобразуем время трека из мс в формат ММ:СЕК */
         trackTimeView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+
     }
 
     //обработка нажатия на трек из списка
@@ -83,6 +86,7 @@ class TrackViewHolder(parent: ViewGroup) :
             collectionName,
             releaseDate,
             primaryGenreName,
+            previewUrl,
             country
         )
         val trackNumber = trackString.trackId.toInt()

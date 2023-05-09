@@ -118,6 +118,7 @@
             android:contentDescription="@string/play"
             android:foregroundGravity="center"
             android:src="@drawable/icon_play_light"
+            android:enabled="false"
             app:backgroundTint="@color/fab_play_button"
             app:elevation="0dp"
             app:fabCustomSize="84dp"
