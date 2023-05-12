@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.service.controls.actions.FloatAction
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -16,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
+import android.icu.text.*
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -30,8 +29,10 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var country: TextView
     private lateinit var previewUrl: String
     private lateinit var play: FloatingActionButton
-    private var progress: TextView? = null
-    private var mainThreadHandler: Handler? = null
+    private lateinit var progress:TextView
+    private lateinit var mainThreadHandler:Handler
+    //private var progress: TextView? = null
+    //private var mainThreadHandler: Handler? = null
     private var playerState = STATE_DEFAULT//переменная для хранения текущего состояния MediaPleyer
     private var mediaPlayer = MediaPlayer()
 
@@ -61,12 +62,12 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.reset()
-        mainThreadHandler?.removeCallbacks(progressTime())
+        mainThreadHandler.removeCallbacks(progressTime())
         mediaPlayer.release()
     }
 
     private fun backMenu() {
-        var playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
+        val playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
         playerBackMenu.setNavigationOnClickListener {
             finish()
         }
@@ -108,7 +109,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         previewUrl = track.previewUrl
         trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        //progress.text=SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(track.releaseDate)
         if (date != null) {
             val formatDatesString = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
@@ -127,11 +127,12 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             play.setImageResource(R.drawable.icon_play_light)
-            mainThreadHandler?.removeCallbacks(progressTime())
+            mainThreadHandler.removeCallbacks(progressTime())
             playerState = STATE_PREPARED
             //устанавливаем текущее положение медиаплеера равным 0 млсек (начало трека)
             mediaPlayer.seekTo(0)
-            progress?.text = "00:00"
+            //progress?.text = "00:00"
+            progress.text =getString(R.string.playing_time)
         }
     }
 
@@ -151,14 +152,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         play.setImageResource(R.drawable.icon_pause_light)
         playerState = STATE_PLAYING
-        mainThreadHandler?.postDelayed(progressTime(), DELAY)
+        mainThreadHandler.postDelayed(progressTime(), DELAY)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         play.setImageResource(R.drawable.icon_play_light)
         playerState = STATE_PAUSED
-        mainThreadHandler?.removeCallbacks(progressTime())
+        mainThreadHandler.removeCallbacks(progressTime())
     }
 
     //Создание Runnable, который будет устанавливать отформатированное текущее значение
@@ -169,14 +170,14 @@ class AudioPlayerActivity : AppCompatActivity() {
             override fun run() {
                 //проверяем работает ли mediaPlayer.isPlaying
                 if (mediaPlayer.isPlaying) {
-                    progress?.text =
-                        (android.icu.text.SimpleDateFormat(
+                    progress.text =
+                        (SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
                         ).format(mediaPlayer.currentPosition))
-                    mainThreadHandler?.postDelayed(this, DELAY)
+                    mainThreadHandler.postDelayed(this, DELAY)
                 } else {
-                    mainThreadHandler?.removeCallbacks(progressTime())
+                    mainThreadHandler.removeCallbacks(progressTime())
                 }
             }
         }
