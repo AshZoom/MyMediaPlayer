@@ -1,15 +1,20 @@
 package com.practicum.mymediaplayer
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
+import android.icu.text.*
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -22,20 +27,47 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var releaseDate: TextView
     private lateinit var genreName: TextView
     private lateinit var country: TextView
-
+    private lateinit var previewUrl: String
+    private lateinit var play: FloatingActionButton
+    private lateinit var progress:TextView
+    private lateinit var mainThreadHandler:Handler
+    //private var progress: TextView? = null
+    //private var mainThreadHandler: Handler? = null
+    private var playerState = STATE_DEFAULT//переменная для хранения текущего состояния MediaPleyer
+    private var mediaPlayer = MediaPlayer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
 
+        //Инициализация Handler главного потока.
+        mainThreadHandler = Handler(Looper.getMainLooper())
+        play = findViewById(R.id.button_play)
         backMenu()
         trackInfo()
-
+        preparePlayer()
+        play.setOnClickListener {
+            playbackControl()
+        }
     }
 
+    //Если сворачиваем приложение через Home или запускаем другое приложение,
+    //то ставим воспроизведение на паузу
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    //Освобождем все ресурсы и службы, которые система выделяла для воспроизведения аудио
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.reset()
+        mainThreadHandler.removeCallbacks(progressTime())
+        mediaPlayer.release()
+    }
 
     private fun backMenu() {
-        var playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
+        val playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
         playerBackMenu.setNavigationOnClickListener {
             finish()
         }
@@ -52,6 +84,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         country = findViewById(R.id.country_data)
         trackTime = findViewById(R.id.trackTime)
         albumCover = findViewById(R.id.cover)
+        progress = findViewById(R.id.progress)
 
         Glide
             .with(albumCover)
@@ -73,16 +106,92 @@ class AudioPlayerActivity : AppCompatActivity() {
         releaseDate.text = track.releaseDate
         genreName.text = track.primaryGenreName
         country.text = track.country
+        previewUrl = track.previewUrl
         trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-
         val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(track.releaseDate)
         if (date != null) {
             val formatDatesString = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
             releaseDate.text = formatDatesString
         }
+    }
 
+    //Управление Android MediaPlayer
+    //Действия по подготовке MediaPlayer
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            play.setImageResource(R.drawable.icon_play_light)
+            mainThreadHandler.removeCallbacks(progressTime())
+            playerState = STATE_PREPARED
+            //устанавливаем текущее положение медиаплеера равным 0 млсек (начало трека)
+            mediaPlayer.seekTo(0)
+            //progress?.text = "00:00"
+            progress.text =getString(R.string.playing_time)
+        }
+    }
 
+    private fun playbackControl() {
+        when (playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    //Методы, которые меняют состояние воспроизведения MediaPlayer
+    private fun startPlayer() {
+        mediaPlayer.start()
+        play.setImageResource(R.drawable.icon_pause_light)
+        playerState = STATE_PLAYING
+        mainThreadHandler.postDelayed(progressTime(), DELAY)
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        play.setImageResource(R.drawable.icon_play_light)
+        playerState = STATE_PAUSED
+        mainThreadHandler.removeCallbacks(progressTime())
+    }
+
+    //Создание Runnable, который будет устанавливать отформатированное текущее значение
+    // currentPosition медиаплеера в TextView, а сразу после этого при помощи Handler с
+    // задержкой в 300–500 миллисекунд запускать свой экземпляр (this).
+    private fun progressTime(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                //проверяем работает ли mediaPlayer.isPlaying
+                if (mediaPlayer.isPlaying) {
+                    progress.text =
+                        (SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(mediaPlayer.currentPosition))
+                    mainThreadHandler.postDelayed(this, DELAY)
+                } else {
+                    mainThreadHandler.removeCallbacks(progressTime())
+                }
+            }
+        }
+    }
+
+    //четыре константы для  состояния MediaPlayer
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+
+    // Задержка 500 мсек
+        private const val DELAY = 500L
     }
 
 
