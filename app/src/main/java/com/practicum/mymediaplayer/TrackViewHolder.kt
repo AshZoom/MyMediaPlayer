@@ -1,6 +1,6 @@
 package com.practicum.mymediaplayer
 
-
+import com.practicum.mymediaplayer.ui.TrackActivity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -106,7 +106,8 @@ class TrackViewHolder(parent: ViewGroup) :
 
         //переход к экрану AudioPlayerActivity
         if (clickDebounce()) {
-            val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
+            //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
+            val intent = Intent(itemView.context, TrackActivity::class.java)
             itemView.context.startActivity(intent)
         }
     }
