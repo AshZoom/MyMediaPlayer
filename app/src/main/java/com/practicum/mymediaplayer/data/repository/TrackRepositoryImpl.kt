@@ -4,7 +4,7 @@ import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.domain.repository.TrackRepository
 import com.practicum.mymediaplayer.trackString
 
-class TrackRepositoryImpl:TrackRepository {
+class TrackRepositoryImpl : TrackRepository {
     override fun getTrack(): Track {
 
         return Track(

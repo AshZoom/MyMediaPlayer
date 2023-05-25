@@ -31,8 +31,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var play: FloatingActionButton
     private lateinit var progress:TextView
     private lateinit var mainThreadHandler:Handler
-    //private var progress: TextView? = null
-    //private var mainThreadHandler: Handler? = null
     private var playerState = STATE_DEFAULT//переменная для хранения текущего состояния MediaPleyer
     private var mediaPlayer = MediaPlayer()
 

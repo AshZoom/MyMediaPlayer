@@ -1,9 +1,7 @@
-package com.practicum.mymediaplayer.presentation
+package com.practicum.mymediaplayer.ui
 
-import android.media.MediaPlayer
+
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,16 +10,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practicum.mymediaplayer.R
+import com.practicum.mymediaplayer.data.repository.TrackRepositoryImpl
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.domain.repository.AudioPlayerPresenter
-import com.practicum.mymediaplayer.domain.repository.AudioPlayerPresenterContract
-import com.practicum.mymediaplayer.domain.repository.AudioPlayerViewContract
+import com.practicum.mymediaplayer.presentation.PlayerModeListenerImpl
+import com.practicum.mymediaplayer.presentation.TrackView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayerActivity : AppCompatActivity(), AudioPlayerViewContract {
+class PlayerActivity : AppCompatActivity(), TrackView {
 
-    private lateinit var presenter: AudioPlayerPresenterContract
     private lateinit var trackName: TextView
     private lateinit var trackTime: TextView
     private lateinit var artistName: TextView
@@ -33,38 +30,64 @@ class AudioPlayerActivity : AppCompatActivity(), AudioPlayerViewContract {
     private lateinit var country: TextView
     private lateinit var previewUrl: String
     private lateinit var play: FloatingActionButton
-    private lateinit var progress:TextView
-    private lateinit var mainThreadHandler:Handler
-
+    private lateinit var progress: TextView
+    private lateinit var presenter: PlayerModeListenerImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        //Инициализация Handler главного потока.
-        mainThreadHandler = Handler(Looper.getMainLooper())
-        play = findViewById(R.id.button_play)
 
-        presenter = AudioPlayerPresenter(this)
+        val trackRepository = TrackRepositoryImpl()
+        val track = trackRepository.getTrack()
 
         backMenu()
-        trackInfo()
-        preparePlayer()
+        trackInfo(track)
+        presenter.preparePlayer(track)
+        presenter.onCompletionListener()
+
         play.setOnClickListener {
-            presenter.handlePlaybackControl()
+            presenter.onClickPlayAndPause()
         }
     }
 
+    //Если сворачиваем приложение через Home или запускаем другое приложение,
+    //то ставим воспроизведение на паузу
     override fun onPause() {
         super.onPause()
         presenter.pausePlayer()
     }
 
+    //Освобождем все ресурсы и службы, которые система выделяла для воспроизведения аудио
     override fun onDestroy() {
         super.onDestroy()
-        presenter.releasePlayer()
+        presenter.clearPlayer()
     }
 
-    override fun showTrackInfo(track: Track) {
+    override fun setProgressTime(time: String) {
+        progress.text = time
+    }
+
+    private fun backMenu() {
+        val playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
+        playerBackMenu.setNavigationOnClickListener {
+            finish()
+        }
+    }
+
+    private fun trackInfo(track: Track) {
+
+        presenter = PlayerModeListenerImpl(this)
+        trackName = findViewById(R.id.track_name)
+        artistName = findViewById(R.id.artist_name)
+        collectionName = findViewById(R.id.album_name)
+        releaseDate = findViewById(R.id.release_year_date)
+        genreName = findViewById(R.id.genre_name)
+        country = findViewById(R.id.country_data)
+        trackTime = findViewById(R.id.trackTime)
+        albumCover = findViewById(R.id.cover)
+        progress = findViewById(R.id.progress)
+        play = findViewById(R.id.button_play)
+
         Glide
             .with(albumCover)
             .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
@@ -95,41 +118,8 @@ class AudioPlayerActivity : AppCompatActivity(), AudioPlayerViewContract {
         }
     }
 
-    override fun setPlayButtonState(isPlaying: Boolean) {
-        val playButtonIcon = if (isPlaying) R.drawable.icon_pause_light else R.drawable.icon_play_light
-        play.setImageResource(playButtonIcon)
+    override fun setPlayIcon(image: Int) {
+        play.setImageResource(image)
     }
-
-    override fun setPlaybackProgress(progress: String) {
-        this.progress.text = progress
-    }
-
-    private fun backMenu() {
-        val playerBackMenu = findViewById<MaterialToolbar>(R.id.player_back_menu)
-        playerBackMenu.setNavigationOnClickListener {
-            finish()
-        }
-    }
-
-    private fun trackInfo() {
-        trackName = findViewById(R.id.track_name)
-        artistName = findViewById(R.id.artist_name)
-        collectionName = findViewById(R.id.album_name)
-        releaseDate = findViewById(R.id.release_year_date)
-        genreName = findViewById(R.id.genre_name)
-        country = findViewById(R.id.country_data)
-        trackTime = findViewById(R.id.trackTime)
-        albumCover = findViewById(R.id.cover)
-        progress = findViewById(R.id.progress)
-    }
-
-    private fun preparePlayer() {
-        presenter.preparePlayer(previewUrl)
-    }
-
-    companion object {
-        private const val DELAY = 500L
-    }
-
 
 }
