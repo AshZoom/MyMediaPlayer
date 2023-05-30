@@ -33,6 +33,7 @@ val trackSaved = ArrayList<Track>()
 const val TRACKS_SAVED = "tracks_saved"
 
 
+
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView

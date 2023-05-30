@@ -4,10 +4,11 @@ import android.os.Handler
 import android.os.Looper
 import com.practicum.mymediaplayer.R
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.domain.repository.Interactor
+import com.practicum.mymediaplayer.domain.interactor.Interactor
 import com.practicum.mymediaplayer.domain.repository.PlayerModeListener
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class PlayerModeListenerImpl(val view: TrackView) : PlayerModeListener {
 
@@ -24,9 +25,12 @@ class PlayerModeListenerImpl(val view: TrackView) : PlayerModeListener {
     // задержкой в 300–500 миллисекунд запускать свой экземпляр (this).
     private val progressTime = object : Runnable {
         override fun run() {
-            val currentTime =
-                SimpleDateFormat("mm:ss", Locale.getDefault()).format(interactor.getCurrentTime())
-            view.setProgressTime(currentTime)
+            //val currentTime =TimeFormatUtil()
+            // SimpleDateFormat("mm:ss", Locale.getDefault()).format(interactor.getCurrentTime())
+            //view.setProgressTime(currentTime)
+            val viewRef: WeakReference<TrackView> = WeakReference(view)
+            val currentTime = TimeFormatUtil()
+            viewRef.get()?.setProgressTime(currentTime)
             mainThreadHandler.postDelayed(this, DELAY)
         }
     }
@@ -95,6 +99,11 @@ class PlayerModeListenerImpl(val view: TrackView) : PlayerModeListener {
         view.setProgressTime("00:00")
     }
 
+    fun TimeFormatUtil():String{
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(interactor.getCurrentTime())
+    }
+
+
 
     override fun setImagePlay() {
         view.setPlayIcon(play)
@@ -102,10 +111,6 @@ class PlayerModeListenerImpl(val view: TrackView) : PlayerModeListener {
 
     override fun setStatePrepared() {
         view.setPlayIcon(play)
-        //play.isEnabled = true
-        //play.setImageResource(R.drawable.icon_play_light)
-        //mainThreadHandler.removeCallbacks(progressTime)
-        //progress.text = getString(R.string.playing_time)
         playerState = STATE_PREPARED
     }
 

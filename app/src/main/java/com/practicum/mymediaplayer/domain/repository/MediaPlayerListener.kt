@@ -1,4 +1,4 @@
-package com.practicum.mymediaplayer.data.repository
+package com.practicum.mymediaplayer.domain.repository
 
 interface MediaPlayerListener {
 

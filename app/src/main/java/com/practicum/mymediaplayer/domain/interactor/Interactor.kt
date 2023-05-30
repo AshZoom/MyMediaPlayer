@@ -1,44 +1,44 @@
-package com.practicum.mymediaplayer.domain.repository
+package com.practicum.mymediaplayer.domain.interactor
 
-import com.practicum.mymediaplayer.data.repository.MediaPlayerListener
-import com.practicum.mymediaplayer.data.repository.PlayerRepository
 import com.practicum.mymediaplayer.domain.models.Track
+import com.practicum.mymediaplayer.domain.repository.MediaPlayerListener
+import com.practicum.mymediaplayer.domain.repository.PlayerModeListener
 
 class Interactor(private val playerModeListener: PlayerModeListener) : MediaPlayerListener {
 
-    private val playerRepository = PlayerRepository(this)
+    private val playerInteractor = PlayerInteractor(this)
 
     fun start() {
-        playerRepository.start()
+        playerInteractor.start()
     }
 
     fun pause() {
-        playerRepository.pause()
+        playerInteractor.pause()
     }
 
 
     fun preparePlayer(track: Track) {
-        playerRepository.preparePlayer(track)
+        playerInteractor.preparePlayer(track)
     }
 
     fun releasePlayer() {
-        playerRepository.releasePlayer()
+        playerInteractor.releasePlayer()
     }
 
     fun resetPlayer() {
-        playerRepository.resetPlayer()
+        playerInteractor.resetPlayer()
     }
 
     fun getCurrentTime(): Int {
-        return playerRepository.getCurrentTime()
+        return playerInteractor.getCurrentTime()
     }
 
     fun isMediaPlayerPlay(): Boolean {
-        return playerRepository.isMediaPlayerPlay()
+        return playerInteractor.isMediaPlayerPlay()
     }
 
     fun onCompletionListener() {
-        playerRepository.onCompletionListener()
+        playerInteractor.onCompletionListener()
     }
 
     override fun setStatePrepared() {

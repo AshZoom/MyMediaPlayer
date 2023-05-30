@@ -14,6 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+
 lateinit var trackString: Track
 
 class TrackViewHolder(parent: ViewGroup) :
@@ -91,13 +93,13 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
-
+/*
         Toast.makeText(
             v?.context,
             "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
             Toast.LENGTH_SHORT
         ).show()
-
+*/
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
         //удаляем из списка выбранных треков трек с одинаковым trackId
@@ -107,8 +109,10 @@ class TrackViewHolder(parent: ViewGroup) :
         //переход к экрану AudioPlayerActivity
         if (clickDebounce()) {
             //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
-            val intent = Intent(itemView.context, PlayerActivity::class.java)
-            itemView.context.startActivity(intent)
+            //itemView.context.startActivity(intent)
+            val context = itemView.context
+            PlayerActivity.startActivity(context)
+
         }
     }
 

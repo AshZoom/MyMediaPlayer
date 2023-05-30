@@ -1,6 +1,8 @@
 package com.practicum.mymediaplayer.ui
 
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,11 +35,18 @@ class PlayerActivity : AppCompatActivity(), TrackView {
     private lateinit var progress: TextView
     private lateinit var presenter: PlayerModeListenerImpl
 
+    companion object {
+        fun startActivity(context: Context){
+            val intent = Intent(context, PlayerActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
 
-        val trackRepository = TrackRepositoryImpl()
+        val trackRepository = TrackRepositoryImpl(applicationContext)
         val track = trackRepository.getTrack()
 
         backMenu()
