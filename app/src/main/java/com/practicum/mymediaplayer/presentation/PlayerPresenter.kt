@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerModeListenerImpl(val view: TrackView) : PlayerModeListener {
+class PlayerPresenter(val view: TrackView) : PlayerModeListener {
 
 
     private val interactor = Interactor(this)

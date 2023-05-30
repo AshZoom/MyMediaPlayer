@@ -8,8 +8,8 @@ import com.practicum.mymediaplayer.trackString
 import com.practicum.mymediaplayer.PLAYLIST_MAKER_PREFERENCE
 
 
-const val PLAYERACTIVITY_TRACK_VIEW = "playeractivity_track_view"
-const val TRACK = "track"
+const val PLAYERACTIVITY_TRACK_KEY = "playeractivity_track_view"
+const val TRACK_KEY = "track"
 class TrackRepositoryImpl( context:Context) : TrackRepository {
 
     val sharedPreferences = context.getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, Context.MODE_PRIVATE)
@@ -19,7 +19,7 @@ class TrackRepositoryImpl( context:Context) : TrackRepository {
 
     override fun getTrack(): Track{
         val playerActivityTrack=
-            sharedPreferences.getString(PLAYERACTIVITY_TRACK_VIEW, null) ?: TRACK
+            sharedPreferences.getString(PLAYERACTIVITY_TRACK_KEY, null) ?: TRACK_KEY
         val gson = Gson()
         val trackPlayerActivity= gson.fromJson(playerActivityTrack, Track::class.java)
         return trackPlayerActivity
@@ -29,7 +29,7 @@ class TrackRepositoryImpl( context:Context) : TrackRepository {
         val gson = Gson()
         val trackJson = gson.toJson(track)
         sharedPreferences.edit()
-            .putString(PLAYERACTIVITY_TRACK_VIEW, trackJson)
+            .putString(PLAYERACTIVITY_TRACK_KEY, trackJson)
             .apply()
     }
 

@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
-import java.util.*
-
-
+import java.util.Locale
 
 lateinit var trackString: Track
-
 class TrackViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.song_list_layout, parent, false)
@@ -27,9 +24,7 @@ class TrackViewHolder(parent: ViewGroup) :
 
     init {
         songLayout.setOnClickListener(this)
-
     }
-
 
     lateinit var primaryGenreName: String
     lateinit var country: String
@@ -93,13 +88,6 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
-/*
-        Toast.makeText(
-            v?.context,
-            "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
-            Toast.LENGTH_SHORT
-        ).show()
-*/
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
         //удаляем из списка выбранных треков трек с одинаковым trackId
@@ -108,11 +96,8 @@ class TrackViewHolder(parent: ViewGroup) :
 
         //переход к экрану AudioPlayerActivity
         if (clickDebounce()) {
-            //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
-            //itemView.context.startActivity(intent)
             val context = itemView.context
             PlayerActivity.startActivity(context)
-
         }
     }
 
