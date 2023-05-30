@@ -17,7 +17,7 @@ import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.presentation.PlayerModeListenerImpl
 import com.practicum.mymediaplayer.presentation.TrackView
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity(), TrackView {
 

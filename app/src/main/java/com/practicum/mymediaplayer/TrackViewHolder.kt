@@ -1,7 +1,6 @@
 package com.practicum.mymediaplayer
 
 import com.practicum.mymediaplayer.ui.PlayerActivity
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -12,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
-import java.util.*
-
-
+import java.util.Locale
 
 lateinit var trackString: Track
 
@@ -93,26 +90,15 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
-/*
-        Toast.makeText(
-            v?.context,
-            "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
-            Toast.LENGTH_SHORT
-        ).show()
-*/
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
         //удаляем из списка выбранных треков трек с одинаковым trackId
         removeDouble()
         trackSaved.reverse()
-
         //переход к экрану AudioPlayerActivity
         if (clickDebounce()) {
-            //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
-            //itemView.context.startActivity(intent)
             val context = itemView.context
             PlayerActivity.startActivity(context)
-
         }
     }
 
