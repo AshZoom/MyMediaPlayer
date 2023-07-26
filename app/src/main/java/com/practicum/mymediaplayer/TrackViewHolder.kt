@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 lateinit var trackString: Track
-
 class TrackViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.song_list_layout, parent, false)
@@ -24,9 +23,7 @@ class TrackViewHolder(parent: ViewGroup) :
 
     init {
         songLayout.setOnClickListener(this)
-
     }
-
 
     lateinit var primaryGenreName: String
     lateinit var country: String
