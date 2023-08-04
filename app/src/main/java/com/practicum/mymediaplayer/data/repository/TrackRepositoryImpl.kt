@@ -16,6 +16,24 @@ class TrackRepositoryImpl( context:Context) : TrackRepository {
     val playerActivitytrack=saveTrack(trackString)
 
 
+/*
+    override fun getTrack(): Track {
+
+
+        return Track(
+            trackId = trackString.trackId,
+            trackName = trackString.trackName,
+            artistName = trackString.artistName,
+            trackTimeMillis = trackString.trackTimeMillis,
+            artworkUrl100 = trackString.artworkUrl100,
+            collectionName = trackString.collectionName,
+            releaseDate = trackString.releaseDate,
+            primaryGenreName = trackString.primaryGenreName,
+            previewUrl = trackString.previewUrl,
+            country = trackString.country
+        )
+    }
+*/
 
     override fun getTrack(): Track{
         val playerActivityTrack=

@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import com.practicum.mymediaplayer.ui.PlayerActivity
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -13,17 +14,22 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+
+
 lateinit var trackString: Track
+
 class TrackViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.song_list_layout, parent, false)
     ), View.OnClickListener {
     //отслеживаем выбор трека в списке треков на экране для сохранения
     val songLayout: LinearLayout = itemView.findViewById(R.id.song_layout)
+    private val clickListener: View.OnClickListener? = null
 
     init {
-        songLayout.setOnClickListener(this)
-    }
+        //songLayout.setOnClickListener(this)
+        songLayout.setOnClickListener(clickListener)
+        }
 
     lateinit var primaryGenreName: String
     lateinit var country: String
@@ -87,17 +93,29 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
+
+        Toast.makeText(
+            v?.context,
+            "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
+            Toast.LENGTH_SHORT
+        ).show()
+
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
         //удаляем из списка выбранных треков трек с одинаковым trackId
         removeDouble()
         trackSaved.reverse()
+
         //переход к экрану AudioPlayerActivity
         if (clickDebounce()) {
+            //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
+            //itemView.context.startActivity(intent)
             val context = itemView.context
             PlayerActivity.startActivity(context)
+
         }
     }
+
 
     //удаляем дублирующиеся треки из спиcка сохраненных
     fun removeDouble() {
@@ -121,6 +139,11 @@ class TrackViewHolder(parent: ViewGroup) :
         }
     }
     //Разрешаем пользователю нажимать на элементы списка треков не чаще одного раза в секунду
+    //Cоздали глобальную Boolean-переменную isClickAllowed со значением true по умолчанию.
+    // В функции clickDebounce()  меняем её значение на false, если оно было true и, используя
+    // Handler и его метод postDelayed(), меняем значение обратно на true через одну секунду.
+    // Функция возвращает Boolean-значение, которое соответствует переменной isClickAllowed
+    // на момент вызова
     private fun clickDebounce() : Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -133,5 +156,11 @@ class TrackViewHolder(parent: ViewGroup) :
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
 }
+
+
+
+
+
+
+

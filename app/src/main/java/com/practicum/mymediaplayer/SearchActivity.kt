@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.mymediaplayer.ui.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +33,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val trackSaved = ArrayList<Track>()
 const val TRACKS_SAVED = "tracks_saved"
+
+
+
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView
@@ -49,11 +54,15 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     private val tracks = ArrayList<Track>()
-    private val adapter = TrackAdapter()
-    private val adapterSavedTracks = TrackSavedAdapter()
+    private val adapter = TrackAdapter( )
+    private val adapterSavedTracks = TrackSavedAdapter{
+        clickOnTrack(it)
+    }
     //в методе showmessage(): если connectionError=true-проблемы со связью
     //если connectionError=false-трек не найден
     private var connectionError = false
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     //работа с Edit Text:
     // TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
@@ -182,6 +191,14 @@ class SearchActivity : AppCompatActivity() {
             writeToSP(sharedPrefs, trackSaved)
             youLookingFor.visibility = View.GONE
             adapterSavedTracks.notifyDataSetChanged()
+        }
+
+    }
+
+    fun clickOnTrack(track: Track) {
+        if (clickDebounce()) {
+            val intent = Intent(this, PlayerActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -338,9 +355,18 @@ class SearchActivity : AppCompatActivity() {
             .apply()
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
     companion object {
         private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
 

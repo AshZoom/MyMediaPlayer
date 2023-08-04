@@ -14,10 +14,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practicum.mymediaplayer.R
 import com.practicum.mymediaplayer.data.repository.TrackRepositoryImpl
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.presentation.PlayerPresenter
+import com.practicum.mymediaplayer.presentation.PlayerModeListenerImpl
 import com.practicum.mymediaplayer.presentation.TrackView
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 class PlayerActivity : AppCompatActivity(), TrackView {
 
@@ -33,7 +33,8 @@ class PlayerActivity : AppCompatActivity(), TrackView {
     private lateinit var previewUrl: String
     private lateinit var play: FloatingActionButton
     private lateinit var progress: TextView
-    private lateinit var presenter: PlayerPresenter
+    private lateinit var presenter: PlayerModeListenerImpl
+
 
     companion object {
         fun startActivity(context: Context){
@@ -85,7 +86,7 @@ class PlayerActivity : AppCompatActivity(), TrackView {
 
     private fun trackInfo(track: Track) {
 
-        presenter = PlayerPresenter(this)
+        presenter = PlayerModeListenerImpl(this)
         trackName = findViewById(R.id.track_name)
         artistName = findViewById(R.id.artist_name)
         collectionName = findViewById(R.id.album_name)
