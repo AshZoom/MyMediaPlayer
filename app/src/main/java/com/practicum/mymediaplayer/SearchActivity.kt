@@ -35,8 +35,7 @@ val trackSaved = ArrayList<Track>()
 const val TRACKS_SAVED = "tracks_saved"
 
 
-
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView
     private lateinit var trackNotFound: ImageView
@@ -45,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var youLookingFor: LinearLayout
     private lateinit var searchTrackList: RecyclerView
     private lateinit var progressBar: ProgressBar
+
     //private val iTunesBaseUrl = "https://itunes.apple.com"
     //запрос на сервер iTunes без VPN
     private val iTunesBaseUrl = "http://itunes.apple.com"
@@ -54,10 +54,9 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     private val tracks = ArrayList<Track>()
-    private val adapter = TrackAdapter( )
-    private val adapterSavedTracks = TrackSavedAdapter{
-        clickOnTrack(it)
-    }
+    private val adapter = TrackAdapter(this)
+    private val adapterSavedTracks = TrackSavedAdapter(this)
+
     //в методе showmessage(): если connectionError=true-проблемы со связью
     //если connectionError=false-трек не найден
     private var connectionError = false
@@ -192,14 +191,6 @@ class SearchActivity : AppCompatActivity() {
             youLookingFor.visibility = View.GONE
             adapterSavedTracks.notifyDataSetChanged()
         }
-
-    }
-
-    fun clickOnTrack(track: Track) {
-        if (clickDebounce()) {
-            val intent = Intent(this, PlayerActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     //сохраняем список выбранных треков в SharePreferences при выходе из SearchActivity
@@ -209,6 +200,7 @@ class SearchActivity : AppCompatActivity() {
         writeToSP(sharedPrefs, trackSaved)
         trackSaved.clear()
     }
+
     override fun onPause() {
         super.onPause()
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
@@ -236,7 +228,7 @@ class SearchActivity : AppCompatActivity() {
 
     // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
     private fun searching() {
-        trackList.visibility=View.GONE
+        trackList.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
         iTunesService.search(inputTextSearch.text.toString()).enqueue(
             object : Callback<ITunesResponse> {
@@ -251,7 +243,7 @@ class SearchActivity : AppCompatActivity() {
                         tracks.clear()
                         updateConnection.visibility = View.GONE
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            trackList.visibility=View.VISIBLE
+                            trackList.visibility = View.VISIBLE
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
                             adapterSavedTracks.notifyDataSetChanged()
@@ -353,6 +345,18 @@ class SearchActivity : AppCompatActivity() {
         sharedPreferences.edit()
             .putString(TRACKS_SAVED, json)
             .apply()
+    }
+
+    override fun onTrackClick(track: Track) {
+        if (clickDebounce()) {
+            Toast.makeText(
+                this,
+                "Нажали на: ${track.trackName}",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this, PlayerActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun clickDebounce(): Boolean {

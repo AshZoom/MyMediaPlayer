@@ -1,7 +1,5 @@
 package com.practicum.mymediaplayer
 
-import com.practicum.mymediaplayer.ui.PlayerActivity
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -15,28 +13,19 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-
 lateinit var trackString: Track
 
 class TrackViewHolder(parent: ViewGroup) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.song_list_layout, parent, false)
-    ), View.OnClickListener {
-    //отслеживаем выбор трека в списке треков на экране для сохранения
-    val songLayout: LinearLayout = itemView.findViewById(R.id.song_layout)
-    private val clickListener: View.OnClickListener? = null
-
-    init {
-        //songLayout.setOnClickListener(this)
-        songLayout.setOnClickListener(clickListener)
-        }
+    ) {
 
     lateinit var primaryGenreName: String
     lateinit var country: String
     lateinit var releaseDate: String
     lateinit var collectionName: String
     lateinit var diskCover: String
-    lateinit var previewUrl:String
+    lateinit var previewUrl: String
 
     private var imageViewHolder: ImageView = itemView.findViewById(R.id.image)
     private var trackNameView: TextView = itemView.findViewById(R.id.track_name)
@@ -48,7 +37,7 @@ class TrackViewHolder(parent: ViewGroup) :
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
-    fun bind(model: Track) {
+    fun bind(model: Track, listener: TrackSavedAdapter.TrackClickListener) {
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .transform(
@@ -68,16 +57,19 @@ class TrackViewHolder(parent: ViewGroup) :
         country = model.country
         releaseDate = model.releaseDate
         collectionName = model.collectionName
-        previewUrl=model.previewUrl
+        previewUrl = model.previewUrl
         /* преобразуем время трека из мс в формат ММ:СЕК */
         trackTimeView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
 
+        itemView.setOnClickListener {
+            handleItemClick(it)
+            listener.onTrackClick(model)
+        }
     }
 
-    //обработка нажатия на трек из списка
-    override fun onClick(v: View?) {
-        // Handle item click here
+    //обработка списка  при нажатии на трек из списка треков
+    private fun handleItemClick(v: View?) {
         trackSaved.reverse()
         trackString = Track(
             "${trackId.text}",
@@ -93,29 +85,12 @@ class TrackViewHolder(parent: ViewGroup) :
         )
         val trackNumber = trackString.trackId.toInt()
         trackSaved.removeIf { it.trackId.toInt() == trackNumber }
-
-        Toast.makeText(
-            v?.context,
-            "Track saved:  ${trackNameView.text} ${artistNameView.text} ",
-            Toast.LENGTH_SHORT
-        ).show()
-
         limitSizeOfTrackSaved()
         trackSaved.add(trackString)
         //удаляем из списка выбранных треков трек с одинаковым trackId
         removeDouble()
         trackSaved.reverse()
-
-        //переход к экрану AudioPlayerActivity
-        if (clickDebounce()) {
-            //val intent = Intent(itemView.context, AudioPlayerActivity::class.java)
-            //itemView.context.startActivity(intent)
-            val context = itemView.context
-            PlayerActivity.startActivity(context)
-
-        }
     }
-
 
     //удаляем дублирующиеся треки из спиcка сохраненных
     fun removeDouble() {
@@ -138,29 +113,5 @@ class TrackViewHolder(parent: ViewGroup) :
             }
         }
     }
-    //Разрешаем пользователю нажимать на элементы списка треков не чаще одного раза в секунду
-    //Cоздали глобальную Boolean-переменную isClickAllowed со значением true по умолчанию.
-    // В функции clickDebounce()  меняем её значение на false, если оно было true и, используя
-    // Handler и его метод postDelayed(), меняем значение обратно на true через одну секунду.
-    // Функция возвращает Boolean-значение, которое соответствует переменной isClickAllowed
-    // на момент вызова
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
 
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
 }
-
-
-
-
-
-
-
