@@ -11,12 +11,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import com.practicum.mymediaplayer.R
 import com.practicum.mymediaplayer.data.repository.TrackRepositoryImpl
 import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.presentation.PlayerModeListenerImpl
 import com.practicum.mymediaplayer.presentation.TrackView
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity(), TrackView {
@@ -35,6 +37,10 @@ class PlayerActivity : AppCompatActivity(), TrackView {
     private lateinit var progress: TextView
     private lateinit var presenter: PlayerModeListenerImpl
 
+
+    private val gson = Gson()
+    private val playerModeListenerImpl = PlayerModeListenerImpl(this)
+
     companion object {
         fun startActivity(context: Context) {
             val intent = Intent(context, PlayerActivity::class.java)
@@ -46,11 +52,18 @@ class PlayerActivity : AppCompatActivity(), TrackView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
 
+        var trackClicked = gson.fromJson(
+            intent.getStringExtra("trackClicked"),
+            Track::class.java
+        )
+        playerModeListenerImpl.transferTrackClicked(trackClicked)
+
         val trackRepository = TrackRepositoryImpl(applicationContext)
+        //trackRepository.saveTrack(trackClicked)
         val track = trackRepository.getTrack()
 
         backMenu()
-        trackInfo(track)
+        trackInfo()
         presenter.preparePlayer(track)
         presenter.onCompletionListener()
 
@@ -83,8 +96,11 @@ class PlayerActivity : AppCompatActivity(), TrackView {
         }
     }
 
-    private fun trackInfo(track: Track) {
-
+    private fun trackInfo() {
+        val track = gson.fromJson(
+            intent.getStringExtra("trackClicked"),
+            Track::class.java
+        )
         presenter = PlayerModeListenerImpl(this)
         trackName = findViewById(R.id.track_name)
         artistName = findViewById(R.id.artist_name)
@@ -118,14 +134,18 @@ class PlayerActivity : AppCompatActivity(), TrackView {
         genreName.text = track.primaryGenreName
         country.text = track.country
         previewUrl = track.previewUrl
-        trackTime.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(track.releaseDate)
+        trackTime.text = millisecFormat (track)
+        val date =dateReleaseFormat(track)
         if (date != null) {
             val formatDatesString = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
             releaseDate.text = formatDatesString
         }
     }
+    fun millisecFormat(track: Track): String =
+        SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+
+    fun dateReleaseFormat(track: Track):Date=
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(track.releaseDate)
 
     override fun setPlayIcon(image: Int) {
         play.setImageResource(image)

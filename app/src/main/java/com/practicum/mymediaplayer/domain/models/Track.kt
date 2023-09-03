@@ -1,6 +1,5 @@
 package com.practicum.mymediaplayer.domain.models
 
-
 data class Track(
     val trackId:String,
     val trackName: String,
@@ -13,3 +12,7 @@ data class Track(
     val previewUrl:String,
     val country: String
 )
+
+
+
+

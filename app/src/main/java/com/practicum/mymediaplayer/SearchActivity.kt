@@ -9,7 +9,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +22,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.ui.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,9 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val trackSaved = ArrayList<Track>()
-const val TRACKS_SAVED = "tracks_saved"
-
-
 class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView
@@ -145,7 +142,6 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
                     trackList.visibility = View.VISIBLE
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
         })
@@ -232,11 +228,9 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
         progressBar.visibility = View.VISIBLE
         iTunesService.search(inputTextSearch.text.toString()).enqueue(
             object : Callback<ITunesResponse> {
-
                 override fun onResponse(
                     call: Call<ITunesResponse>,
                     response: Response<ITunesResponse>
-
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.code() == 200) {
@@ -322,7 +316,6 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
             }
         } else {
             clearDisplay()
-
         }
     }
 
@@ -349,12 +342,14 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
 
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-            Toast.makeText(
+/*            Toast.makeText(
                 this,
                 "Нажали на: ${track.trackName}",
                 Toast.LENGTH_SHORT
             ).show()
+ */
             val intent = Intent(this, PlayerActivity::class.java)
+            intent.putExtra("trackClicked", Gson().toJson(track))
             startActivity(intent)
         }
     }
@@ -367,8 +362,10 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
         }
         return current
     }
+
     companion object {
         private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+        const val TRACKS_SAVED = "tracks_saved"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }

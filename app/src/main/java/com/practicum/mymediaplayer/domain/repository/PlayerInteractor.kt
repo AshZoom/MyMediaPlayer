@@ -1,6 +1,6 @@
 package com.practicum.mymediaplayer.domain.repository
 
-interface MediaPlayerListener {
+interface PlayerInteractor {
 
     fun setStatePrepared()
     fun removeHandlersCallbacks()

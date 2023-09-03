@@ -1,21 +1,33 @@
 package com.practicum.mymediaplayer.domain.interactor
 
+
+
+
+import com.practicum.mymediaplayer.data.repository.TrackRepositoryImpl
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.domain.repository.MediaPlayerListener
+import com.practicum.mymediaplayer.domain.repository.PlayerInteractor
 import com.practicum.mymediaplayer.domain.repository.PlayerModeListener
+import com.practicum.mymediaplayer.domain.repository.TrackRepository
 
-class Interactor(private val playerModeListener: PlayerModeListener) : MediaPlayerListener {
 
-    private val playerInteractor = PlayerInteractor(this)
+class Interactor(private val playerModeListener: PlayerModeListener) : PlayerInteractor,
+    TrackRepository {
+
+    private val playerInteractor = PlayerInteractorImpl(this)
+
+    /*  fun transferTrackClicked(track: Track) {
+           val trackClicked = this.saveTrack(track)
+           //saveTrack(track)
+       }
+   */
+
 
     fun start() {
         playerInteractor.start()
     }
-
     fun pause() {
         playerInteractor.pause()
     }
-
 
     fun preparePlayer(track: Track) {
         playerInteractor.preparePlayer(track)
@@ -28,7 +40,6 @@ class Interactor(private val playerModeListener: PlayerModeListener) : MediaPlay
     fun resetPlayer() {
         playerInteractor.resetPlayer()
     }
-
     fun getCurrentTime(): Int {
         return playerInteractor.getCurrentTime()
     }
@@ -36,7 +47,6 @@ class Interactor(private val playerModeListener: PlayerModeListener) : MediaPlay
     fun isMediaPlayerPlay(): Boolean {
         return playerInteractor.isMediaPlayerPlay()
     }
-
     fun onCompletionListener() {
         playerInteractor.onCompletionListener()
     }
@@ -56,5 +66,16 @@ class Interactor(private val playerModeListener: PlayerModeListener) : MediaPlay
     override fun setTimeInZero() {
         playerModeListener.setTimeInZero()
     }
+
+    override fun getTrack(): Track {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveTrack(trackClicked: Track){
+    val trackToSave=trackClicked
+    //trackRepository.saveTrack(trackClicked)
+
+    }
+
 
 }

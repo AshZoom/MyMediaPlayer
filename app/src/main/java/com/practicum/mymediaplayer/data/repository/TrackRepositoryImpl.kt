@@ -4,46 +4,26 @@ import android.content.Context
 import com.google.gson.Gson
 import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.domain.repository.TrackRepository
-import com.practicum.mymediaplayer.trackString
 import com.practicum.mymediaplayer.PLAYLIST_MAKER_PREFERENCE
-
 
 const val PLAYERACTIVITY_TRACK_VIEW = "playeractivity_track_view"
 const val TRACK = "track"
-class TrackRepositoryImpl( context:Context) : TrackRepository {
 
-    val sharedPreferences = context.getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, Context.MODE_PRIVATE)
-    val playerActivitytrack=saveTrack(trackString)
+class TrackRepositoryImpl(context: Context) : TrackRepository {
 
 
-/*
+    val sharedPreferences =
+        context.getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, Context.MODE_PRIVATE)
+
     override fun getTrack(): Track {
-
-
-        return Track(
-            trackId = trackString.trackId,
-            trackName = trackString.trackName,
-            artistName = trackString.artistName,
-            trackTimeMillis = trackString.trackTimeMillis,
-            artworkUrl100 = trackString.artworkUrl100,
-            collectionName = trackString.collectionName,
-            releaseDate = trackString.releaseDate,
-            primaryGenreName = trackString.primaryGenreName,
-            previewUrl = trackString.previewUrl,
-            country = trackString.country
-        )
-    }
-*/
-
-    override fun getTrack(): Track{
-        val playerActivityTrack=
+        val playerActivityTrack =
             sharedPreferences.getString(PLAYERACTIVITY_TRACK_VIEW, null) ?: TRACK
         val gson = Gson()
-        val trackPlayerActivity= gson.fromJson(playerActivityTrack, Track::class.java)
+        val trackPlayerActivity = gson.fromJson(playerActivityTrack, Track::class.java)
         return trackPlayerActivity
     }
 
-    fun saveTrack(track:com.practicum.mymediaplayer.Track) {
+   override fun saveTrack(track: Track) {
         val gson = Gson()
         val trackJson = gson.toJson(track)
         sharedPreferences.edit()

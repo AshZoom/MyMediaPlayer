@@ -2,9 +2,9 @@ package com.practicum.mymediaplayer.domain.interactor
 
 import android.media.MediaPlayer
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.domain.repository.MediaPlayerListener
+import com.practicum.mymediaplayer.domain.repository.PlayerInteractor
 
-class PlayerInteractor(private val mediaPlayerListener: MediaPlayerListener) {
+class PlayerInteractorImpl(private val mediaPlayerListener: PlayerInteractor) {
 
     private val mediaPlayer = MediaPlayer()
 
