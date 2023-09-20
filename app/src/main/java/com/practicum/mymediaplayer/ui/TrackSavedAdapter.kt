@@ -1,4 +1,4 @@
-package com.practicum.mymediaplayer
+package com.practicum.mymediaplayer.ui
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

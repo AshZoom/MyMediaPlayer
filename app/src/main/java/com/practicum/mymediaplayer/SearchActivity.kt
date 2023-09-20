@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.ui.PlayerActivity
+import com.practicum.mymediaplayer.ui.TrackAdapter
+import com.practicum.mymediaplayer.ui.TrackSavedAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -339,15 +341,14 @@ class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener
             .putString(TRACKS_SAVED, json)
             .apply()
     }
-
+    // Переход к PlayerActivity по нажатию трека
     override fun onTrackClick(track: Track) {
         if (clickDebounce()) {
-/*            Toast.makeText(
+            Toast.makeText(
                 this,
                 "Нажали на: ${track.trackName}",
                 Toast.LENGTH_SHORT
             ).show()
- */
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra("trackClicked", Gson().toJson(track))
             startActivity(intent)

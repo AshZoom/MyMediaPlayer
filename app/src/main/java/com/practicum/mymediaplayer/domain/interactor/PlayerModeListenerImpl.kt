@@ -4,18 +4,15 @@ import android.media.MediaPlayer
 import com.practicum.mymediaplayer.domain.models.Track
 import com.practicum.mymediaplayer.domain.repository.PlayerInteractor
 import com.practicum.mymediaplayer.domain.repository.PlayerModeListener
-import com.practicum.mymediaplayer.domain.repository.TrackRepository
+import com.practicum.mymediaplayer.utility.Creator
 
+class PlayerModeListenerImpl(private val playerModeListener: PlayerModeListener) :PlayerInteractor{
 
-//class PlayerInteractorImpl(private val playerModeListener: PlayerModeListener) : TrackRepository {
-class PlayerInteractorImpl(private val trackRepository:TrackRepository ) : PlayerInteractor{
-    //private val mediaPlayer = MediaPlayer()
+    private val mediaPlayer = MediaPlayer()
 
-   fun saveTrackClicked(track: Track){
-        trackRepository.saveTrack(track)
+    fun saveTrackClicked(track: Track){
+        //trackRepository.saveTrack(track)
     }
-
-/*
     fun start() {
         mediaPlayer.start()
     }
@@ -62,22 +59,19 @@ class PlayerInteractorImpl(private val trackRepository:TrackRepository ) : Playe
     fun resetPlayer() {
         mediaPlayer.reset()
     }
-*/
-        override fun setStatePrepared() {
-            //playerModeListener.setStatePrepared()
-        }
+    override fun setStatePrepared() {
+        playerModeListener.setStatePrepared()
+    }
 
-        override fun removeHandlersCallbacks() {
-            //playerModeListener.removeHandlersCallbacks()
-        }
+    override fun removeHandlersCallbacks() {
+        playerModeListener.removeHandlersCallbacks()
+    }
 
-        override fun setTimeInZero() {
-            //playerModeListener.setTimeInZero()
-        }
+    override fun setTimeInZero() {
+        playerModeListener.setTimeInZero()
+    }
 
-        override fun setImagePlay() {
-            //playerModeListener.setImagePlay()
-        }
-
-
+    override fun setImagePlay() {
+        playerModeListener.setImagePlay()
+    }
 }

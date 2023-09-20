@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import com.practicum.mymediaplayer.R
 import com.practicum.mymediaplayer.data.repository.TrackRepositoryImpl
 import com.practicum.mymediaplayer.domain.models.Track
-import com.practicum.mymediaplayer.presentation.PlayerModeListenerImpl
+import com.practicum.mymediaplayer.presentation.PlayerPresenter
 import com.practicum.mymediaplayer.presentation.TrackView
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -35,11 +35,11 @@ class PlayerActivity : AppCompatActivity(), TrackView {
     private lateinit var previewUrl: String
     private lateinit var play: FloatingActionButton
     private lateinit var progress: TextView
-    private lateinit var presenter: PlayerModeListenerImpl
+    private lateinit var presenter: PlayerPresenter
 
 
     private val gson = Gson()
-    private val playerModeListenerImpl = PlayerModeListenerImpl(this)
+    private val playerpresenter = PlayerPresenter(this)
 
     companion object {
         fun startActivity(context: Context) {
@@ -51,12 +51,12 @@ class PlayerActivity : AppCompatActivity(), TrackView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-
+        // сохраняем в переменной trackClicked данные о нажатом треке
         var trackClicked = gson.fromJson(
             intent.getStringExtra("trackClicked"),
             Track::class.java
         )
-        playerModeListenerImpl.transferTrackClicked(trackClicked)
+        playerpresenter.transferTrackClicked(trackClicked)
 
         val trackRepository = TrackRepositoryImpl(applicationContext)
         //trackRepository.saveTrack(trackClicked)
@@ -101,7 +101,7 @@ class PlayerActivity : AppCompatActivity(), TrackView {
             intent.getStringExtra("trackClicked"),
             Track::class.java
         )
-        presenter = PlayerModeListenerImpl(this)
+        presenter = PlayerPresenter(this)
         trackName = findViewById(R.id.track_name)
         artistName = findViewById(R.id.artist_name)
         collectionName = findViewById(R.id.album_name)
@@ -134,17 +134,18 @@ class PlayerActivity : AppCompatActivity(), TrackView {
         genreName.text = track.primaryGenreName
         country.text = track.country
         previewUrl = track.previewUrl
-        trackTime.text = millisecFormat (track)
-        val date =dateReleaseFormat(track)
+        trackTime.text = millisecFormat(track)
+        val date = dateReleaseFormat(track)
         if (date != null) {
             val formatDatesString = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
             releaseDate.text = formatDatesString
         }
     }
+
     fun millisecFormat(track: Track): String =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
-    fun dateReleaseFormat(track: Track):Date=
+    fun dateReleaseFormat(track: Track): Date =
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(track.releaseDate)
 
     override fun setPlayIcon(image: Int) {
