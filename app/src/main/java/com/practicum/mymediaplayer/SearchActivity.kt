@@ -1,6 +1,7 @@
 package com.practicum.mymediaplayer
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -8,7 +9,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -22,6 +22,10 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.practicum.mymediaplayer.domain.models.Track
+import com.practicum.mymediaplayer.ui.PlayerActivity
+import com.practicum.mymediaplayer.ui.TrackAdapter
+import com.practicum.mymediaplayer.ui.TrackSavedAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,10 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 val trackSaved = ArrayList<Track>()
-const val TRACKS_SAVED = "tracks_saved"
-
-
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackSavedAdapter.TrackClickListener {
     private lateinit var inputTextSearch: EditText
     private lateinit var placeholderMessage: TextView
     private lateinit var trackNotFound: ImageView
@@ -42,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var youLookingFor: LinearLayout
     private lateinit var searchTrackList: RecyclerView
     private lateinit var progressBar: ProgressBar
+
     //private val iTunesBaseUrl = "https://itunes.apple.com"
     //запрос на сервер iTunes без VPN
     private val iTunesBaseUrl = "http://itunes.apple.com"
@@ -51,11 +53,14 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     private val tracks = ArrayList<Track>()
-    private val adapter = TrackAdapter()
-    private val adapterSavedTracks = TrackSavedAdapter()
+    private val adapter = TrackAdapter(this)
+    private val adapterSavedTracks = TrackSavedAdapter(this)
+
     //в методе showmessage(): если connectionError=true-проблемы со связью
     //если connectionError=false-трек не найден
     private var connectionError = false
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     //работа с Edit Text:
     // TEXT_EDITTEXT -ключ, по которому  будем сохранять и восстанавливать   текст
@@ -139,7 +144,6 @@ class SearchActivity : AppCompatActivity() {
                     trackList.visibility = View.VISIBLE
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
         })
@@ -194,6 +198,7 @@ class SearchActivity : AppCompatActivity() {
         writeToSP(sharedPrefs, trackSaved)
         trackSaved.clear()
     }
+
     override fun onPause() {
         super.onPause()
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCE, MODE_PRIVATE)
@@ -221,22 +226,20 @@ class SearchActivity : AppCompatActivity() {
 
     // поисковый HTTP-запрос к веб-серверу iTunes и получение ответа в фоновом потоке
     private fun searching() {
-        trackList.visibility=View.GONE
+        trackList.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
         iTunesService.search(inputTextSearch.text.toString()).enqueue(
             object : Callback<ITunesResponse> {
-
                 override fun onResponse(
                     call: Call<ITunesResponse>,
                     response: Response<ITunesResponse>
-
                 ) {
                     progressBar.visibility = View.GONE
                     if (response.code() == 200) {
                         tracks.clear()
                         updateConnection.visibility = View.GONE
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            trackList.visibility=View.VISIBLE
+                            trackList.visibility = View.VISIBLE
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
                             adapterSavedTracks.notifyDataSetChanged()
@@ -315,7 +318,6 @@ class SearchActivity : AppCompatActivity() {
             }
         } else {
             clearDisplay()
-
         }
     }
 
@@ -339,10 +341,34 @@ class SearchActivity : AppCompatActivity() {
             .putString(TRACKS_SAVED, json)
             .apply()
     }
+    // Переход к PlayerActivity по нажатию трека
+    override fun onTrackClick(track: Track) {
+        if (clickDebounce()) {
+            Toast.makeText(
+                this,
+                "Нажали на: ${track.trackName}",
+                Toast.LENGTH_SHORT
+            ).show()
+            val intent = Intent(this, PlayerActivity::class.java)
+            intent.putExtra("trackClicked", Gson().toJson(track))
+            startActivity(intent)
+        }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 
     companion object {
         private const val TEXT_EDITTEXT = "TEXT_EDITTEXT"
+        const val TRACKS_SAVED = "tracks_saved"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
 

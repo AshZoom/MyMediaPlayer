@@ -11,10 +11,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
-import android.icu.text.*
+import com.practicum.mymediaplayer.ui.trackString
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -31,8 +30,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var play: FloatingActionButton
     private lateinit var progress:TextView
     private lateinit var mainThreadHandler:Handler
-    //private var progress: TextView? = null
-    //private var mainThreadHandler: Handler? = null
     private var playerState = STATE_DEFAULT//переменная для хранения текущего состояния MediaPleyer
     private var mediaPlayer = MediaPlayer()
 

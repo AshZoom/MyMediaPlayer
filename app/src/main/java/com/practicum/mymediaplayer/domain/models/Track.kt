@@ -1,4 +1,4 @@
-package com.practicum.mymediaplayer
+package com.practicum.mymediaplayer.domain.models
 
 data class Track(
     val trackId:String,

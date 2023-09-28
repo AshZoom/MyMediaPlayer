@@ -1,11 +1,13 @@
-package com.practicum.mymediaplayer
+package com.practicum.mymediaplayer.ui
 
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.mymediaplayer.domain.models.Track
 
 
-class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(val listener: TrackSavedAdapter.TrackClickListener) :
+    RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
@@ -13,7 +15,7 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
         TrackViewHolder(parent)
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks.get(position))
+        holder.bind(tracks[position], listener)
     }
 
     override fun getItemCount(): Int = tracks.size
